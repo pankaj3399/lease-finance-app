@@ -17,6 +17,12 @@ const ApplicationForm = () => {
 
   const [stepsIndex, setStepsIndex] = useState(0);
 
+  const onPrevHandler = useCallback(() => {
+    if (stepsIndex > 0) {
+      setStepsIndex((prev) => prev - 1);
+    }
+  }, [stepsIndex]);
+
   const onNextHandler = useCallback(() => {
     setStepsIndex((prev) => prev + 1);
   }, []);
@@ -42,16 +48,18 @@ const ApplicationForm = () => {
           <ApplicationHousingForm
             isRuralRoute={isRuralRoute}
             toggleCheckIsRuralRoute={toggleCheckIsRuralRoute}
+            onNextHandler={onNextHandler}
+            onPrevHandler={onPrevHandler}
             baseFieldName='firstApplication'
           />
         ),
       },
     ],
-    [onNextHandler, isRuralRoute]
+    [onNextHandler, isRuralRoute, onPrevHandler]
   );
 
   return (
-    <div className='flex flex-col mt-12 mx-2'>
+    <div className='flex flex-col mt-12 mx-2 max-w-[800px]'>
       <Title level={4}>{steps[stepsIndex]?.title}</Title>
 
       <Card>

@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   DatePicker,
   Divider,
@@ -13,11 +14,19 @@ import React from 'react';
 type Props = {
   isRuralRoute: boolean;
   toggleCheckIsRuralRoute: () => void;
+  onPrevHandler: () => void;
+  onNextHandler: () => void;
   baseFieldName: string;
 };
 
 const ApplicationHousingForm = (props: Props) => {
-  const { isRuralRoute, toggleCheckIsRuralRoute, baseFieldName } = props;
+  const {
+    isRuralRoute,
+    toggleCheckIsRuralRoute,
+    baseFieldName,
+    onNextHandler,
+    onPrevHandler,
+  } = props;
 
   const addressFields = isRuralRoute ? (
     <>
@@ -128,6 +137,16 @@ const ApplicationHousingForm = (props: Props) => {
         }}
       >
         <Input />
+      </Form.Item>
+      <Form.Item>
+        <div className='flex items-center justify-between w-full'>
+          <Button onClick={onPrevHandler} type='primary'>
+            Prev
+          </Button>
+          <Button onClick={onNextHandler} type='primary'>
+            Next
+          </Button>
+        </div>
       </Form.Item>
     </>
   );
