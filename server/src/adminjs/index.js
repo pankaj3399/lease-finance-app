@@ -4,6 +4,8 @@ import AdminJS from 'adminjs';
 import mongoStore from 'connect-mongo';
 
 import UserModel from '../modules/user/model.js';
+import loanApplicationModel from '../modules/loan-application/model.js';
+import applicationModel from '../modules/application/model.js';
 
 const DEFAULT_ADMIN = {
   email: process.env.ADMIN_EMAIL || 'admin@example.com',
@@ -23,7 +25,7 @@ const initAdminJS = async (app) => {
     Database: AdminJSMonggoose.Database,
   });
 
-  const adminModels = [UserModel];
+  const adminModels = [UserModel, loanApplicationModel, applicationModel];
 
   const adminOptions = {
     resources: adminModels,
