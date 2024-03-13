@@ -2,9 +2,8 @@ import joi from 'joi';
 
 const valideLoginUser = (data) => {
   const loginUserSchema = joi.object().keys({
-    email: joi.string().email().required().messages({
-      'any.required': 'Email is required',
-      'string.email': 'Email is invalid',
+    username: joi.string().required().messages({
+      'any.required': 'Username is required',
     }),
     password: joi.string().required().messages({
       'any.required': 'Password is required',
