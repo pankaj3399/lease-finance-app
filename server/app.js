@@ -16,7 +16,11 @@ connectToDB();
 
 const admin = await initAdminJS(app);
 
-admin.watch();
+if (process.env.NODE_ENV === 'production') {
+  admin.initialize();
+} else {
+  admin.watch();
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
