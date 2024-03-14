@@ -36,7 +36,7 @@ const ApplicationForm = () => {
       router.push('/dealer-portal/success');
     } catch (err) {
       if (err instanceof Error) {
-        messageApi.error(err?.message);
+        messageApi.error(err?.response?.data?.message ?? err?.message);
       }
     }
   };

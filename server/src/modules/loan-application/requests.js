@@ -180,6 +180,12 @@ const validateCreateLoanApplication = (data) => {
       }),
       otherwise: joi.object().optional().allow(''),
     }),
+    agreePrivacyNotice: joi.boolean().required().valid(true).messages({
+      'any.only': 'You must agree to Privacy Notice',
+    }),
+    agreeTermsAndConditions: joi.boolean().required().valid(true).messages({
+      'any.only': 'You must agree to Terms and Conditions',
+    }),
   });
 
   const result = createLoanApplicationSchema.validate(data);

@@ -4,11 +4,13 @@ import {
   Checkbox,
   Descriptions,
   Divider,
+  Form,
   Typography,
+  message,
 } from 'antd';
-import React from 'react';
-import dayjs from 'dayjs';
+import React, { useState } from 'react';
 import Link from 'next/link';
+
 import ApplicationReviewTemplate from './ApplicationReviewTemplate';
 
 type Props = {
@@ -37,28 +39,60 @@ const ApplicationReview = (props: Props) => {
         </>
       )}
 
-      <div className='flex flex-col space-y-5 !mb-10'>
-        <div className='flex items-center  gap-4'>
-          <Checkbox required />
-          <p className='max-w-[400px]'>
-            I have read and agree to the{' '}
-            <Link href='/terms-and-conditions' target='_blank'>
-              Terms and Conditions
-            </Link>{' '}
-            By clicking &quot;Submit&quot;, I authorize you to check my credit
-            report.
-          </p>
-        </div>
-        <div className='flex items-center gap-4'>
-          <Checkbox required />
-          <p>
-            I have read and agree to the terms of the{' '}
-            <Link href='/privacy-notice' target='_blank'>
-              Privacy Notice
-            </Link>
-            .
-          </p>
-        </div>
+      <div className='space-y-5 !mb-10'>
+        <Form.Item
+          rules={[
+            {
+              validator: (rule, value) => {
+                if (value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error('You must check this to proceed')
+                );
+              },
+            },
+          ]}
+          name='agreeTermsAndConditions'
+          valuePropName='checked'
+        >
+          <Checkbox>
+            <p className='max-w-[500px]'>
+              I have read and agree to the{' '}
+              <Link href='/terms-and-conditions' target='_blank'>
+                Terms and Conditions
+              </Link>{' '}
+              By clicking &quot;Submit&quot;, I authorize you to check my credit
+              report.
+            </p>
+          </Checkbox>
+        </Form.Item>
+        <Form.Item
+          rules={[
+            {
+              validator: (rule, value) => {
+                if (value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error('You must check this to proceed')
+                );
+              },
+            },
+          ]}
+          name='agreePrivacyNotice'
+          valuePropName='checked'
+        >
+          <Checkbox>
+            <p>
+              I have read and agree to the terms of the{' '}
+              <Link href='/privacy-notice' target='_blank'>
+                Privacy Notice
+              </Link>
+              .
+            </p>
+          </Checkbox>
+        </Form.Item>
       </div>
 
       <div className='flex justify-between'>
