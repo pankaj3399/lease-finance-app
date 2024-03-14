@@ -58,8 +58,8 @@ const ApplicationContactInfoForm = (props: Props) => {
             name={[baseFieldName, 'phoneNumberType']}
           >
             <Radio.Group>
-              <Radio.Button value='home'>Home</Radio.Button>
-              <Radio.Button value='cell'>Cell</Radio.Button>
+              <Radio.Button value='Home'>Home</Radio.Button>
+              <Radio.Button value='Cell'>Cell</Radio.Button>
             </Radio.Group>
           </Form.Item>
           <Form.Item rules={generalRules} name={[baseFieldName, 'phoneNumber']}>
@@ -74,17 +74,21 @@ const ApplicationContactInfoForm = (props: Props) => {
       >
         <Input placeholder='Enter your email' />
       </Form.Item>
-      <Divider />
-      <Form.Item label="Salesperson's Name (Optional)">
-        <Space.Compact className='gap-2'>
-          <Form.Item name={[baseFieldName, 'salesPersonFirstName']}>
-            <Input placeholder='First' />
+      {baseFieldName === 'firstApplication' && (
+        <>
+          <Divider />
+          <Form.Item label="Salesperson's Name (Optional)">
+            <Space.Compact className='gap-2'>
+              <Form.Item name={['salesPersonFirstName']}>
+                <Input placeholder='First' />
+              </Form.Item>
+              <Form.Item name={['salesPersonLastName']}>
+                <Input placeholder='Last' />
+              </Form.Item>
+            </Space.Compact>
           </Form.Item>
-          <Form.Item name={[baseFieldName, 'salesPersonLastName']}>
-            <Input placeholder='Last' />
-          </Form.Item>
-        </Space.Compact>
-      </Form.Item>
+        </>
+      )}
 
       <div className='flex justify-between flex-row-reverse w-full'>
         <Button type='primary' onClick={() => onNextHandler(requiredFields)}>

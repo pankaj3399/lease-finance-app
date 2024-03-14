@@ -43,22 +43,31 @@ const ApplicationReviewTemplate = (props: Props) => {
               key: '1',
               label: 'Address',
               children: (
-                <p>
-                  {application?.currentAddress?.isRuralRoute
-                    ? `${application?.currentAddress?.ruralRoute} ${application?.currentAddress?.box}`
-                    : application?.currentAddress?.street}
-                  <br />
-                  {application?.currentAddress?.city},{' '}
-                  {application?.currentAddress?.state}{' '}
-                  {application?.currentAddress?.zipCode}
-                </p>
+                <>
+                  {application?.currentAddress?.isSameAsApplicant ? (
+                    'Same As Applicant'
+                  ) : (
+                    <p>
+                      {application?.currentAddress?.isRuralRoute
+                        ? `${application?.currentAddress?.ruralRoute} ${application?.currentAddress?.box}`
+                        : application?.currentAddress?.street}
+                      <br />
+                      {application?.currentAddress?.city},{' '}
+                      {application?.currentAddress?.state}{' '}
+                      {application?.currentAddress?.zipCode}
+                    </p>
+                  )}
+                </>
               ),
               span: 4,
             },
             {
               key: '2',
               label: 'Housing Status',
-              children: application?.currentAddress?.housingStatus,
+              children: application?.currentAddress
+                ?.isSameMortageInformationAsApplicant
+                ? 'Same As Applicant'
+                : application?.currentAddress?.housingStatus,
               span: 4,
             },
             {
@@ -101,15 +110,21 @@ const ApplicationReviewTemplate = (props: Props) => {
               key: '1',
               label: 'Address',
               children: (
-                <p>
-                  {application?.previousAddress?.isRuralRoute
-                    ? `${application?.previousAddress?.ruralRoute} ${application?.previousAddress?.box}`
-                    : application?.previousAddress?.street}
-                  <br />
-                  {application?.previousAddress?.city},{' '}
-                  {application?.previousAddress?.state}{' '}
-                  {application?.previousAddress?.zipCode}
-                </p>
+                <>
+                  {application?.previousAddress?.isSameAsApplicant ? (
+                    'Same As Applicant'
+                  ) : (
+                    <p>
+                      {application?.previousAddress?.isRuralRoute
+                        ? `${application?.previousAddress?.ruralRoute} ${application?.previousAddress?.box}`
+                        : application?.previousAddress?.street}
+                      <br />
+                      {application?.previousAddress?.city},{' '}
+                      {application?.previousAddress?.state}{' '}
+                      {application?.previousAddress?.zipCode}
+                    </p>
+                  )}
+                </>
               ),
               span: 4,
             },

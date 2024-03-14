@@ -1,4 +1,13 @@
-import { Button, Divider, Form, Input, InputNumber, Select, Space } from 'antd';
+import {
+  Button,
+  Divider,
+  Form,
+  FormInstance,
+  Input,
+  InputNumber,
+  Select,
+  Space,
+} from 'antd';
 import React from 'react';
 
 import { employementStatus, incomeSources } from './formConstants';
@@ -7,10 +16,11 @@ type Props = {
   onPrevHandler: () => void;
   onNextHandler: (fields: string[] | string[][]) => void;
   baseFieldName: string;
+  formInstance: FormInstance<any>;
 };
 
 const ApplicationEmployementForm = (props: Props) => {
-  const { onNextHandler, onPrevHandler, baseFieldName } = props;
+  const { onNextHandler, onPrevHandler, baseFieldName, formInstance } = props;
 
   const generalRules = [
     {
@@ -42,13 +52,14 @@ const ApplicationEmployementForm = (props: Props) => {
             name={[baseFieldName, 'currentEmployement', 'employementStatus']}
           >
             <Select placeholder='Select employement status'>
-              {employementStatus.map((status) => (
+              {employementStatus.map((status: string) => (
                 <Select.Option key={status} value={status}>
                   {status}
                 </Select.Option>
               ))}
             </Select>
           </Form.Item>
+
           <Form.Item
             labelCol={{
               span: 24,

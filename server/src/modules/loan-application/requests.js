@@ -9,7 +9,7 @@ const validateCreateLoanApplication = (data) => {
     lastName: joi.string().required().messages({
       'any.required': 'Last name is required',
     }),
-    phoneNumberType: joi.string().required().valid('home', 'cell').messages({
+    phoneNumberType: joi.string().required().valid('Home', 'Cell').messages({
       'any.required': 'Phone number type is required',
       'any.required': 'Invalid phone number type',
     }),
@@ -23,42 +23,80 @@ const validateCreateLoanApplication = (data) => {
       .object()
       .required()
       .keys({
+        isSameAsApplicant: joi.boolean().optional().allow(''),
+        isSameMortageInformationAsApplicant: joi.boolean().optional().allow(''),
         isRuralRoute: joi.boolean().optional().allow('').default(false),
-        ruralRoute: joi.when('isRuralRoute', {
-          is: true,
-          then: joi.string().required(),
-          otherwise: joi.string().optional().allow(''),
+        ruralRoute: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.when('isRuralRoute', {
+            is: true,
+            then: joi.string().required(),
+            otherwise: joi.string().optional().allow(''),
+          }),
+          otherwise: joi.string().optional().allow('').default(false),
         }),
         box: joi.when('isRuralRoute', {
           is: true,
           then: joi.string().required(),
           otherwise: joi.string().optional().allow(''),
         }),
-        street: joi.when('isRuralRoute', {
-          is: true,
-          then: joi.string().optional().allow('').default(''),
-          otherwise: joi.string().required().messages({
-            'any.required': 'Current street address is required',
+        street: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.when('isRuralRoute', {
+            is: true,
+            then: joi.string().optional().allow('').default(''),
+            otherwise: joi.string().required().messages({
+              'any.required': 'Current street address is required',
+            }),
           }),
+          otherwise: joi.string().optional().allow('').default(''),
         }),
-        zipCode: joi.string().required().messages({
-          'any.required': 'Current zip code is required',
+        zipCode: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.string().required().messages({
+            'any.required': 'Current zip code is required',
+          }),
+          otherwise: joi.string().optional().allow('').default(''),
         }),
-        city: joi.string().required().messages({
-          'any.required': 'Current city is required',
+        city: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.string().required().messages({
+            'any.required': 'Current city is required',
+          }),
+          otherwise: joi.string().optional().allow('').default(''),
         }),
-        state: joi.string().required().messages({
-          'any.required': 'Current state is required',
+        state: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.string().required().messages({
+            'any.required': 'Current state is required',
+          }),
+          otherwise: joi.string().optional().allow('').default(''),
         }),
-        housingStatus: joi.string().required().messages({
-          'any.required': 'Current housing status is required',
+        housingStatus: joi.when('isSameMortageInformationAsApplicant', {
+          is: false,
+          then: joi.string().required().messages({
+            'any.required': 'Current housing status is required',
+          }),
+          otherwise: joi.string().optional().allow('').default(''),
         }),
-        monthsAtAddress: joi.number().required().messages({
-          'any.required': 'Months at current address is required',
+        monthsAtAddress: joi.when('isSameMortageInformationAsApplicant', {
+          is: false,
+          then: joi.number().required().messages({
+            'any.required': 'Months at current address is required',
+          }),
+          otherwise: joi.number().optional().allow('').default(''),
         }),
         yearsAtAddress: joi.number().optional().allow(''),
-        mortage: joi.number().required().messages({
-          'any.required': 'Mortage at current house is required',
+        mortage: joi.when('isSameMortageInformationAsApplicant', {
+          is: false,
+          then: joi.when('housingStatus', {
+            is: 'Own Outright',
+            then: joi.number().optional().allow('').default(''),
+            otherwise: joi.number().required().messages({
+              'any.required': 'Mortage at current house is required',
+            }),
+          }),
+          otherwise: joi.number().optional().allow('').default(''),
         }),
       })
       .messages({
@@ -74,32 +112,54 @@ const validateCreateLoanApplication = (data) => {
       .object()
       .required()
       .keys({
+        isSameAsApplicant: joi.boolean().optional().allow(''),
+        isSameMortageInformationAsApplicant: joi.boolean().optional().allow(''),
         isRuralRoute: joi.boolean().optional().allow('').default(false),
-        ruralRoute: joi.when('isRuralRoute', {
-          is: true,
-          then: joi.string().required(),
-          otherwise: joi.string().optional().allow(''),
+        ruralRoute: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.when('isRuralRoute', {
+            is: true,
+            then: joi.string().required(),
+            otherwise: joi.string().optional().allow(''),
+          }),
+          otherwise: joi.string().optional().allow('').default(false),
         }),
         box: joi.when('isRuralRoute', {
           is: true,
           then: joi.string().required(),
           otherwise: joi.string().optional().allow(''),
         }),
-        street: joi.when('isRuralRoute', {
-          is: true,
-          then: joi.string().optional().allow('').default(''),
-          otherwise: joi.string().required().messages({
-            'any.required': 'Current street address is required',
+        street: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.when('isRuralRoute', {
+            is: true,
+            then: joi.string().optional().allow('').default(''),
+            otherwise: joi.string().required().messages({
+              'any.required': 'Previous address street address is required',
+            }),
           }),
+          otherwise: joi.string().optional().allow('').default(''),
         }),
-        zipCode: joi.string().required().messages({
-          'any.required': 'Current zip code is required',
+        zipCode: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.string().required().messages({
+            'any.required': 'Previous address zip code is required',
+          }),
+          otherwise: joi.string().optional().allow('').default(''),
         }),
-        city: joi.string().required().messages({
-          'any.required': 'Current city is required',
+        city: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.string().required().messages({
+            'any.required': 'Previous address city is required',
+          }),
+          otherwise: joi.string().optional().allow('').default(''),
         }),
-        state: joi.string().required().messages({
-          'any.required': 'Current state is required',
+        state: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.string().required().messages({
+            'any.required': 'Previous address state is required',
+          }),
+          otherwise: joi.string().optional().allow('').default(''),
         }),
       })
       .messages({
@@ -185,6 +245,15 @@ const validateCreateLoanApplication = (data) => {
     }),
     agreeTermsAndConditions: joi.boolean().required().valid(true).messages({
       'any.only': 'You must agree to Terms and Conditions',
+    }),
+    salesPersonFirstName: joi.string().optional().allow(''),
+    salesPersonLastName: joi.string().optional().allow(''),
+    relationWithCoApplicant: joi.when('applicationType', {
+      is: 'joint',
+      then: joi.string().required().messages({
+        'any.required': 'Relation with co-applicant is required',
+      }),
+      otherwise: joi.string().optional().allow(''),
     }),
   });
 

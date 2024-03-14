@@ -24,8 +24,8 @@ const applicationSchema = new mongoose.Schema(
     },
     phoneNumberType: {
       type: String,
-      enum: ['home', 'cell'],
-      default: 'home',
+      enum: ['Home', 'Cell'],
+      default: 'Home',
     },
     email: {
       type: String,
@@ -38,6 +38,14 @@ const applicationSchema = new mongoose.Schema(
       type: String,
     },
     currentAddress: {
+      isSameAsApplicant: {
+        type: Boolean,
+        default: false,
+      },
+      isSameMortageInformationAsApplicant: {
+        type: Boolean,
+        default: false,
+      },
       isRuralRoute: {
         type: Boolean,
         default: false,
@@ -52,14 +60,10 @@ const applicationSchema = new mongoose.Schema(
       apartment: String,
       zipCode: {
         type: String,
-        required: true,
       },
-      city: { type: String, required: true },
-      state: { type: String, required: true },
-      housingStatus: {
-        type: String,
-        required: true,
-      },
+      city: String,
+      state: String,
+      housingStatus: String,
       yearsAtAddress: {
         type: Number,
         default: 0,
@@ -76,6 +80,14 @@ const applicationSchema = new mongoose.Schema(
     dob: String,
     SSN: String,
     previousAddress: {
+      isSameAsApplicant: {
+        type: Boolean,
+        default: false,
+      },
+      isSameMortageInformationAsApplicant: {
+        type: Boolean,
+        default: false,
+      },
       isRuralRoute: {
         type: Boolean,
         default: false,
@@ -88,12 +100,9 @@ const applicationSchema = new mongoose.Schema(
       },
       street: String,
       apartment: String,
-      zipCode: {
-        type: String,
-        required: true,
-      },
-      city: { type: String, required: true },
-      state: { type: String, required: true },
+      zipCode: String,
+      city: String,
+      state: String,
     },
     currentEmployement: {
       employementStatus: {

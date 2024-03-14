@@ -15,6 +15,7 @@ import {
   ApplicationPreviousEmployementForm,
   ApplicationReview,
 } from './ApplicationFormSteps';
+
 import useAxiosAuth from '@/hooks/useAxiosAuth';
 
 const ApplicationForm = () => {
@@ -31,6 +32,7 @@ const ApplicationForm = () => {
   const [stepsIndex, setStepsIndex] = useState(0);
 
   const onSubmit = async (values: any) => {
+    console.log(JSON.stringify(values));
     try {
       await submitLoanApplication(values);
       router.push('/dealer-portal/success');
@@ -49,7 +51,7 @@ const ApplicationForm = () => {
   }, [stepsIndex]);
 
   const onNextHandler = useCallback(
-    async (fields: string[] | string[][]) => {
+    async (fields: (string | string[])[]) => {
       try {
         await form.validateFields(fields);
         setStepsIndex((prev) => prev + 1);
@@ -100,6 +102,7 @@ const ApplicationForm = () => {
             baseFieldName='firstApplication'
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
+            formInstance={form}
           />
         ),
       },
@@ -168,6 +171,7 @@ const ApplicationForm = () => {
             baseFieldName='firstApplication'
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
+            formInstance={form}
           />
         ),
       },
@@ -220,6 +224,7 @@ const ApplicationForm = () => {
             baseFieldName='secondApplication'
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
+            formInstance={form}
           />
         ),
       },
@@ -276,7 +281,14 @@ const ApplicationForm = () => {
           initialValues={{
             applicationType: 'individual',
             firstApplication: {
-              phoneNumberType: 'home',
+              phoneNumberType: 'Home',
+            },
+            secondApplication: {
+              phoneNumberType: 'Home',
+              currentAddress: {
+                isSameAsApplicant: false,
+                isSameMortageInformation: false,
+              },
             },
           }}
         >

@@ -4,6 +4,7 @@ import {
   Form,
   FormInstance,
   Input,
+  Radio,
   Select,
   Space,
 } from 'antd';
@@ -20,8 +21,15 @@ type Props = {
 const ApplicationPreviousAddressForm = (props: Props) => {
   const { baseFieldName, onPrevHandler, onNextHandler, formInstance } = props;
 
+  const applicationType = Form.useWatch('applicationType', formInstance);
+
   const isRuralRoute = Form.useWatch(
     [baseFieldName, 'previousAddress', 'isRuralRoute'],
+    formInstance
+  );
+
+  const isSameAsApplicant = Form.useWatch(
+    [baseFieldName, 'previousAddress', 'isSameAsApplicant'],
     formInstance
   );
 
@@ -78,63 +86,79 @@ const ApplicationPreviousAddressForm = (props: Props) => {
 
   return (
     <>
-      <Form.Item label='Address' required>
+      {baseFieldName === 'secondApplication' && (
         <Form.Item
-          name={[baseFieldName, 'previousAddress', 'isRuralRoute']}
-          valuePropName='checked'
+          name={[baseFieldName, 'previousAddress', 'isSameAsApplicant']}
+          label='Same address as applicant?'
         >
-          <Checkbox>I have a rural route</Checkbox>
+          <Radio.Group>
+            <Radio value={true}>Yes</Radio>
+            <Radio value={false}>No</Radio>
+          </Radio.Group>
         </Form.Item>
-        {addressFields}
-      </Form.Item>
-      <Form.Item>
-        <Space className='gap-2'>
-          <Form.Item
-            rules={generalRules}
-            name={[baseFieldName, 'previousAddress', 'zipCode']}
-          >
-            <Input placeholder='Zip Code' />
-          </Form.Item>
-          <Form.Item
-            rules={generalRules}
-            name={[baseFieldName, 'previousAddress', 'city']}
-          >
-            <Select
-              showSearch
-              optionFilterProp='children'
-              allowClear
-              placeholder='Select city'
+      )}
+
+      {!isSameAsApplicant && (
+        <>
+          <Form.Item label='Address' required>
+            <Form.Item
+              name={[baseFieldName, 'previousAddress', 'isRuralRoute']}
+              valuePropName='checked'
             >
-              {states?.map(([state, cities]) => (
-                <Select.OptGroup key={state} label={state}>
-                  {cities?.map((city) => (
-                    <Select.Option key={city} value={city}>
-                      {city}
+              <Checkbox>I have a rural route</Checkbox>
+            </Form.Item>
+            {addressFields}
+          </Form.Item>
+          <Form.Item>
+            <Space className='gap-2'>
+              <Form.Item
+                rules={generalRules}
+                name={[baseFieldName, 'previousAddress', 'zipCode']}
+              >
+                <Input placeholder='Zip Code' />
+              </Form.Item>
+              <Form.Item
+                rules={generalRules}
+                name={[baseFieldName, 'previousAddress', 'city']}
+              >
+                <Select
+                  showSearch
+                  optionFilterProp='children'
+                  allowClear
+                  placeholder='Select city'
+                >
+                  {states?.map(([state, cities]) => (
+                    <Select.OptGroup key={state} label={state}>
+                      {cities?.map((city) => (
+                        <Select.Option key={city} value={city}>
+                          {city}
+                        </Select.Option>
+                      ))}
+                    </Select.OptGroup>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                rules={generalRules}
+                name={[baseFieldName, 'previousAddress', 'state']}
+              >
+                <Select
+                  showSearch
+                  optionFilterProp='children'
+                  allowClear
+                  placeholder='Select state'
+                >
+                  {states?.map(([key, val]) => (
+                    <Select.Option key={key} value={key}>
+                      {key}
                     </Select.Option>
                   ))}
-                </Select.OptGroup>
-              ))}
-            </Select>
+                </Select>
+              </Form.Item>
+            </Space>
           </Form.Item>
-          <Form.Item
-            rules={generalRules}
-            name={[baseFieldName, 'previousAddress', 'state']}
-          >
-            <Select
-              showSearch
-              optionFilterProp='children'
-              allowClear
-              placeholder='Select state'
-            >
-              {states?.map(([key, val]) => (
-                <Select.Option key={key} value={key}>
-                  {key}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Space>
-      </Form.Item>
+        </>
+      )}
       <Form.Item>
         <div className='flex items-center justify-between w-full'>
           <Button onClick={onPrevHandler} type='primary'>

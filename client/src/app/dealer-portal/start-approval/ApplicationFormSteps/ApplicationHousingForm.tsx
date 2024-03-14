@@ -8,6 +8,7 @@ import {
   FormInstance,
   Input,
   InputNumber,
+  Radio,
   Select,
   Space,
 } from 'antd';
@@ -16,7 +17,7 @@ import { housingStatuses, states } from './formConstants';
 
 type Props = {
   onPrevHandler: () => void;
-  onNextHandler: (fields: string[] | string[][]) => void;
+  onNextHandler: (fields: (string | string[])[]) => void;
   baseFieldName: string;
   formInstance: FormInstance<any>;
 };
@@ -24,13 +25,24 @@ type Props = {
 const ApplicationHousingForm = (props: Props) => {
   const { baseFieldName, onNextHandler, onPrevHandler, formInstance } = props;
 
+  const applicationType = Form.useWatch('applicationType', formInstance);
+
   const isRuralRoute = Form.useWatch(
     [baseFieldName, 'currentAddress', 'isRuralRoute'],
     formInstance
   );
-
   const housingStatus = Form.useWatch(
     [baseFieldName, 'currentAddress', 'housingStatus'],
+    formInstance
+  );
+
+  const isSameAsApplicant = Form.useWatch(
+    [baseFieldName, 'currentAddress', 'isSameAsApplicant'],
+    formInstance
+  );
+
+  const isSameMortageInformationAsApplicant = Form.useWatch(
+    [baseFieldName, 'currentAddress', 'isSameMortageInformationAsApplicant'],
     formInstance
   );
 
@@ -76,7 +88,7 @@ const ApplicationHousingForm = (props: Props) => {
     </>
   );
 
-  const requiredFields: string[][] = [
+  const requiredFields: (string | string[])[] = [
     [baseFieldName, 'currentAddress', 'ruralRoute'],
     [baseFieldName, 'currentAddress', 'box'],
     [baseFieldName, 'currentAddress', 'street'],
@@ -88,124 +100,161 @@ const ApplicationHousingForm = (props: Props) => {
     [baseFieldName, 'currentAddress', 'mortage'],
     [baseFieldName, 'dob'],
     [baseFieldName, 'SSN'],
+    'relationWithCoApplicant',
   ];
 
   return (
     <>
-      <Form.Item label='Address'>
+      {baseFieldName === 'secondApplication' && (
         <Form.Item
-          name={[baseFieldName, 'currentAddress', 'isRuralRoute']}
-          valuePropName='checked'
+          name={[baseFieldName, 'currentAddress', 'isSameAsApplicant']}
+          label='Same address as applicant?'
         >
-          <Checkbox>I have a rural route</Checkbox>
+          <Radio.Group>
+            <Radio value={true}>Yes</Radio>
+            <Radio value={false}>No</Radio>
+          </Radio.Group>
         </Form.Item>
-        {addressFields}
-      </Form.Item>
-      <Form.Item wrapperCol={{ span: 24 }}>
-        <Space className='gap-2'>
-          <Form.Item
-            rules={generalRules}
-            name={[baseFieldName, 'currentAddress', 'zipCode']}
-          >
-            <Input placeholder='Zip Code' />
-          </Form.Item>
-          <Form.Item
-            rules={generalRules}
-            name={[baseFieldName, 'currentAddress', 'city']}
-          >
-            <Select
-              showSearch
-              optionFilterProp='children'
-              allowClear
-              placeholder='Select city'
+      )}
+      {!isSameAsApplicant && (
+        <>
+          <Form.Item label='Address'>
+            <Form.Item
+              name={[baseFieldName, 'currentAddress', 'isRuralRoute']}
+              valuePropName='checked'
             >
-              {states?.map(([state, cities]) => (
-                <Select.OptGroup key={state} label={state}>
-                  {cities?.map((city) => (
-                    <Select.Option key={city} value={city}>
-                      {city}
-                    </Select.Option>
-                  ))}
-                </Select.OptGroup>
-              ))}
-            </Select>
+              <Checkbox>I have a rural route</Checkbox>
+            </Form.Item>
+            {addressFields}
           </Form.Item>
-          <Form.Item
-            rules={generalRules}
-            name={[baseFieldName, 'currentAddress', 'state']}
-          >
-            <Select
-              showSearch
-              optionFilterProp='children'
-              allowClear
-              placeholder='Select state'
-            >
-              {states?.map(([key, val]) => (
-                <Select.Option key={key} value={key}>
-                  {key}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Space>
-      </Form.Item>
-      <Divider />
-      <Form.Item>
-        <Space.Compact className='gap-2'>
-          <Form.Item
-            labelCol={{
-              span: 24,
-            }}
-            rules={generalRules}
-            label='Housing Status'
-            name={[baseFieldName, 'currentAddress', 'housingStatus']}
-          >
-            <Select placeholder='Select Housing Status'>
-              {housingStatuses.map((status) => (
-                <Select.Option key={status} value={status}>
-                  {status}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            labelCol={{
-              span: 24,
-            }}
-            wrapperCol={{
-              span: 12,
-            }}
-            required
-            label='Time at Address'
-          >
-            <Space.Compact className='gap-2'>
+          <Form.Item wrapperCol={{ span: 24 }}>
+            <Space className='gap-2'>
               <Form.Item
-                name={[baseFieldName, 'currentAddress', 'yearsAtAddress']}
+                rules={generalRules}
+                name={[baseFieldName, 'currentAddress', 'zipCode']}
               >
-                <InputNumber addonAfter={'Years'} min={0} />
+                <Input placeholder='Zip Code' />
               </Form.Item>
               <Form.Item
                 rules={generalRules}
-                name={[baseFieldName, 'currentAddress', 'monthsAtAddress']}
+                name={[baseFieldName, 'currentAddress', 'city']}
               >
-                <InputNumber addonAfter={'Months'} min={0} />
+                <Select
+                  showSearch
+                  optionFilterProp='children'
+                  allowClear
+                  placeholder='Select city'
+                >
+                  {states?.map(([state, cities]) => (
+                    <Select.OptGroup key={state} label={state}>
+                      {cities?.map((city) => (
+                        <Select.Option key={city} value={city}>
+                          {city}
+                        </Select.Option>
+                      ))}
+                    </Select.OptGroup>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                rules={generalRules}
+                name={[baseFieldName, 'currentAddress', 'state']}
+              >
+                <Select
+                  showSearch
+                  optionFilterProp='children'
+                  allowClear
+                  placeholder='Select state'
+                >
+                  {states?.map(([key, val]) => (
+                    <Select.Option key={key} value={key}>
+                      {key}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Space>
+          </Form.Item>
+        </>
+      )}
+      <Divider />
+      {baseFieldName === 'secondApplication' && isSameAsApplicant && (
+        <Form.Item
+          name={[
+            baseFieldName,
+            'currentAddress',
+            'isSameMortageInformationAsApplicant',
+          ]}
+          label='Same Mortgage/Rent information as applicant?'
+        >
+          <Radio.Group>
+            <Radio value={true}>Yes</Radio>
+            <Radio value={false}>No</Radio>
+          </Radio.Group>
+        </Form.Item>
+      )}
+
+      {!isSameMortageInformationAsApplicant && (
+        <>
+          <Form.Item>
+            <Space.Compact className='gap-2'>
+              <Form.Item
+                labelCol={{
+                  span: 24,
+                }}
+                rules={generalRules}
+                label='Housing Status'
+                name={[baseFieldName, 'currentAddress', 'housingStatus']}
+              >
+                <Select placeholder='Select Housing Status'>
+                  {housingStatuses.map((status) => (
+                    <Select.Option key={status} value={status}>
+                      {status}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                labelCol={{
+                  span: 24,
+                }}
+                wrapperCol={{
+                  span: 12,
+                }}
+                required
+                label='Time at Address'
+              >
+                <Space.Compact className='gap-2'>
+                  <Form.Item
+                    name={[baseFieldName, 'currentAddress', 'yearsAtAddress']}
+                  >
+                    <InputNumber addonAfter={'Years'} min={0} />
+                  </Form.Item>
+                  <Form.Item
+                    rules={generalRules}
+                    name={[baseFieldName, 'currentAddress', 'monthsAtAddress']}
+                  >
+                    <InputNumber addonAfter={'Months'} min={0} />
+                  </Form.Item>
+                </Space.Compact>
               </Form.Item>
             </Space.Compact>
           </Form.Item>
-        </Space.Compact>
-      </Form.Item>
-      {housingStatus !== 'Own Outright' && (
-        <Form.Item
-          labelCol={{
-            span: 24,
-          }}
-          label='Mortage Payment/Rent'
-          rules={generalRules}
-          name={[baseFieldName, 'currentAddress', 'mortage']}
-        >
-          <InputNumber addonAfter={'/Month'} addonBefore={'$'} />
-        </Form.Item>
+          {housingStatus !== 'Own Outright' && (
+            <Form.Item
+              labelCol={{
+                span: 24,
+              }}
+              label='Mortage Payment/Rent'
+              rules={generalRules}
+              name={[baseFieldName, 'currentAddress', 'mortage']}
+            >
+              <InputNumber addonAfter={'/Month'} addonBefore={'$'} />
+            </Form.Item>
+          )}
+        </>
       )}
+
       <Divider />
       <Form.Item
         rules={generalRules}
@@ -224,6 +273,27 @@ const ApplicationHousingForm = (props: Props) => {
       >
         <Input placeholder='Enter your SSN/ITIN' />
       </Form.Item>
+
+      {applicationType === 'joint' && baseFieldName === 'firstApplication' && (
+        <>
+          <Divider />
+          <Form.Item
+            wrapperCol={{
+              span: 8,
+            }}
+            rules={generalRules}
+            name={'relationWithCoApplicant'}
+            label='Relation to Co-Applicant'
+          >
+            <Select placeholder='Select RelationShip to Co-Applicant'>
+              <Select.Option value='Spouse'>Spouse</Select.Option>
+              <Select.Option value='Relative'>Relative</Select.Option>
+              <Select.Option value='Other'>Other</Select.Option>
+            </Select>
+          </Form.Item>
+        </>
+      )}
+
       <Form.Item>
         <div className='flex items-center justify-between w-full'>
           <Button onClick={onPrevHandler} type='primary'>
