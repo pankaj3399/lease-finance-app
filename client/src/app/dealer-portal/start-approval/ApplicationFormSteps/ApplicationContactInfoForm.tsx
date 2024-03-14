@@ -1,31 +1,51 @@
 import { Button, Divider, Form, Input, Radio, Space } from 'antd';
 
 type Props = {
-  onNextHandler: () => void;
+  onNextHandler: (fields: string[][]) => void;
+  onPrevHandler?: () => void;
   baseFieldName: string;
 };
 
 const ApplicationContactInfoForm = (props: Props) => {
-  const { onNextHandler, baseFieldName } = props;
+  const { onNextHandler, baseFieldName, onPrevHandler } = props;
+
+  const generalRules = [
+    {
+      required: true,
+      message: 'Required',
+    },
+  ];
+
+  const requiredFields = [
+    [baseFieldName, 'firstName'],
+    [baseFieldName, 'lastName'],
+    [baseFieldName, 'phoneNumber'],
+    [baseFieldName, 'phoneNumberType'],
+    [baseFieldName, 'email'],
+  ];
 
   return (
     <>
-      <Form.Item label='Application Type' name='applicationType'>
-        <Radio.Group>
-          <Radio value='individual'> Individual </Radio>
-          <Radio value='joint'> Joint </Radio>
-        </Radio.Group>
-      </Form.Item>
-      <Divider />
-      <Form.Item label='Name'>
+      {baseFieldName === 'firstApplication' && (
+        <>
+          <Form.Item label='Application Type' name='applicationType'>
+            <Radio.Group>
+              <Radio value='individual'> Individual </Radio>
+              <Radio value='joint'> Joint </Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Divider />
+        </>
+      )}
+      <Form.Item label='Name' required>
         <Space.Compact className='gap-2'>
-          <Form.Item name={[baseFieldName, 'firstName']}>
+          <Form.Item rules={generalRules} name={[baseFieldName, 'firstName']}>
             <Input placeholder='First Name' />
           </Form.Item>
           <Form.Item name={[baseFieldName, 'middleName']}>
             <Input placeholder='Middle Name' />
           </Form.Item>
-          <Form.Item name={[baseFieldName, 'lastName']}>
+          <Form.Item rules={generalRules} name={[baseFieldName, 'lastName']}>
             <Input placeholder='Last Name' />
           </Form.Item>
         </Space.Compact>
@@ -33,18 +53,25 @@ const ApplicationContactInfoForm = (props: Props) => {
       <Divider />
       <Form.Item label='Primary Phone Number'>
         <Space.Compact className='gap-2'>
-          <Form.Item name={[baseFieldName, 'phoneNumber']}>
+          <Form.Item
+            rules={generalRules}
+            name={[baseFieldName, 'phoneNumberType']}
+          >
             <Radio.Group>
               <Radio.Button value='home'>Home</Radio.Button>
               <Radio.Button value='cell'>Cell</Radio.Button>
             </Radio.Group>
           </Form.Item>
-          <Form.Item name={[baseFieldName, 'phoneNumber']}>
+          <Form.Item rules={generalRules} name={[baseFieldName, 'phoneNumber']}>
             <Input placeholder='Phone number' />
           </Form.Item>
         </Space.Compact>
       </Form.Item>
-      <Form.Item label='Email' name={[baseFieldName, 'email']}>
+      <Form.Item
+        rules={generalRules}
+        label='Email'
+        name={[baseFieldName, 'email']}
+      >
         <Input placeholder='Enter your email' />
       </Form.Item>
       <Divider />
@@ -58,15 +85,19 @@ const ApplicationContactInfoForm = (props: Props) => {
           </Form.Item>
         </Space.Compact>
       </Form.Item>
-      <Form.Item
-        wrapperCol={{
-          offset: 21,
-        }}
-      >
-        <Button type='primary' onClick={onNextHandler}>
+
+      <div className='flex justify-between flex-row-reverse w-full'>
+        <Button type='primary' onClick={() => onNextHandler(requiredFields)}>
           Next
         </Button>
-      </Form.Item>
+        <Button
+          type='primary'
+          onClick={onPrevHandler}
+          className={`${baseFieldName === 'firstApplication' && '!hidden'}`}
+        >
+          Prev
+        </Button>
+      </div>
     </>
   );
 };

@@ -100,7 +100,7 @@ const applicationSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
-      employeer: {
+      employer: {
         type: String,
         required: true,
       },
@@ -121,13 +121,16 @@ const applicationSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      annualIncome: {
+        type: Number,
+      },
     },
     previousEmployement: {
       employementStatus: {
         type: String,
         required: true,
       },
-      employeer: {
+      employer: {
         type: String,
         required: true,
       },

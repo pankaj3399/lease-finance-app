@@ -1,21 +1,42 @@
 'use client';
 
-import { Card, Form } from 'antd';
+import { useRouter } from 'next/navigation';
+import { Card, Form, message } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useCallback, useMemo, useState } from 'react';
-import ApplicationContactInfoForm from './ApplicationFormSteps/ApplicationContactInfoForm';
-import ApplicationHousingForm from './ApplicationFormSteps/ApplicationHousingForm';
+
+import useSubmitLoanApplicationForm from '@/hooks/useSubmitLoanApplicationForm';
+
+import {
+  ApplicationContactInfoForm,
+  ApplicationHousingForm,
+  ApplicationPreviousAddressForm,
+  ApplicationEmployementForm,
+  ApplicationPreviousEmployementForm,
+  ApplicationReview,
+} from './ApplicationFormSteps';
 
 const ApplicationForm = () => {
+  const router = useRouter();
   const [form] = Form.useForm();
+  const [messageApi, context] = message.useMessage();
 
-  const [isRuralRoute, setIsRuralRoute] = useState(false);
+  const applicationType = Form.useWatch('applicationType', form);
 
-  const onSubmit = (values: any) => {
-    console.log({ values });
-  };
+  const { submitLoanApplication, loading } = useSubmitLoanApplicationForm();
 
   const [stepsIndex, setStepsIndex] = useState(0);
+
+  const onSubmit = async (values: any) => {
+    try {
+      await submitLoanApplication(values);
+      router.push('/dealer-portal/success');
+    } catch (err) {
+      if (err instanceof Error) {
+        messageApi.error(err?.message);
+      }
+    }
+  };
 
   const onPrevHandler = useCallback(() => {
     if (stepsIndex > 0) {
@@ -23,15 +44,19 @@ const ApplicationForm = () => {
     }
   }, [stepsIndex]);
 
-  const onNextHandler = useCallback(() => {
-    setStepsIndex((prev) => prev + 1);
-  }, []);
+  const onNextHandler = useCallback(
+    async (fields: string[] | string[][]) => {
+      try {
+        await form.validateFields(fields);
+        setStepsIndex((prev) => prev + 1);
+      } catch (err) {
+        console.log({ err });
+      }
+    },
+    [form]
+  );
 
-  const toggleCheckIsRuralRoute = () => {
-    setIsRuralRoute((prev) => !prev);
-  };
-
-  const steps = useMemo(
+  const IndividualSteps = useMemo(
     () => [
       {
         title: 'Application Contact Info',
@@ -46,31 +71,216 @@ const ApplicationForm = () => {
         title: 'Application Housing',
         form: (
           <ApplicationHousingForm
-            isRuralRoute={isRuralRoute}
-            toggleCheckIsRuralRoute={toggleCheckIsRuralRoute}
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
             baseFieldName='firstApplication'
+            formInstance={form}
+          />
+        ),
+      },
+      {
+        title: 'Application Previous Address',
+        form: (
+          <ApplicationPreviousAddressForm
+            baseFieldName='firstApplication'
+            onPrevHandler={onPrevHandler}
+            onNextHandler={onNextHandler}
+            formInstance={form}
+          />
+        ),
+      },
+      {
+        title: 'Application Employement',
+        form: (
+          <ApplicationEmployementForm
+            baseFieldName='firstApplication'
+            onNextHandler={onNextHandler}
+            onPrevHandler={onPrevHandler}
+          />
+        ),
+      },
+      {
+        title: 'Application Previous Employement',
+        form: (
+          <ApplicationPreviousEmployementForm
+            baseFieldName='firstApplication'
+            onNextHandler={onNextHandler}
+            onPrevHandler={onPrevHandler}
+          />
+        ),
+      },
+      {
+        title: 'Application Review',
+        form: (
+          <ApplicationReview
+            values={form.getFieldsValue()}
+            onPrevHandler={onPrevHandler}
+            onSubmitHandler={() => form.submit()}
+            isLoading={loading}
           />
         ),
       },
     ],
-    [onNextHandler, isRuralRoute, onPrevHandler]
+    [onNextHandler, onPrevHandler, form, loading]
   );
+
+  const JointSteps = useMemo(
+    () => [
+      {
+        title: 'Application Contact Info',
+        form: (
+          <ApplicationContactInfoForm
+            onNextHandler={onNextHandler}
+            baseFieldName='firstApplication'
+          />
+        ),
+      },
+      {
+        title: 'Application Housing',
+        form: (
+          <ApplicationHousingForm
+            onNextHandler={onNextHandler}
+            onPrevHandler={onPrevHandler}
+            baseFieldName='firstApplication'
+            formInstance={form}
+          />
+        ),
+      },
+      {
+        title: 'Application Previous Address',
+        form: (
+          <ApplicationPreviousAddressForm
+            baseFieldName='firstApplication'
+            onPrevHandler={onPrevHandler}
+            onNextHandler={onNextHandler}
+            formInstance={form}
+          />
+        ),
+      },
+      {
+        title: 'Application Employement',
+        form: (
+          <ApplicationEmployementForm
+            baseFieldName='firstApplication'
+            onNextHandler={onNextHandler}
+            onPrevHandler={onPrevHandler}
+          />
+        ),
+      },
+      {
+        title: 'Application Previous Employement',
+        form: (
+          <ApplicationPreviousEmployementForm
+            baseFieldName='firstApplication'
+            onNextHandler={onNextHandler}
+            onPrevHandler={onPrevHandler}
+          />
+        ),
+      },
+      {
+        title: 'Co-Application Contact Info',
+        form: (
+          <ApplicationContactInfoForm
+            onNextHandler={onNextHandler}
+            baseFieldName='secondApplication'
+            onPrevHandler={onPrevHandler}
+          />
+        ),
+      },
+      {
+        title: 'Co-Application Housing',
+        form: (
+          <ApplicationHousingForm
+            onNextHandler={onNextHandler}
+            onPrevHandler={onPrevHandler}
+            baseFieldName='secondApplication'
+            formInstance={form}
+          />
+        ),
+      },
+      {
+        title: 'Co-Application Previous Address',
+        form: (
+          <ApplicationPreviousAddressForm
+            baseFieldName='secondApplication'
+            onPrevHandler={onPrevHandler}
+            onNextHandler={onNextHandler}
+            formInstance={form}
+          />
+        ),
+      },
+      {
+        title: 'Co-Application Employement',
+        form: (
+          <ApplicationEmployementForm
+            baseFieldName='secondApplication'
+            onNextHandler={onNextHandler}
+            onPrevHandler={onPrevHandler}
+          />
+        ),
+      },
+      {
+        title: 'Co-Application Previous Employement',
+        form: (
+          <ApplicationPreviousEmployementForm
+            baseFieldName='secondApplication'
+            onNextHandler={onNextHandler}
+            onPrevHandler={onPrevHandler}
+          />
+        ),
+      },
+      {
+        title: 'Application Review',
+        form: (
+          <ApplicationReview
+            values={form.getFieldsValue()}
+            onPrevHandler={onPrevHandler}
+            onSubmitHandler={() => form.submit()}
+            isLoading={loading}
+          />
+        ),
+      },
+    ],
+    [onNextHandler, onPrevHandler, form, loading]
+  );
+
+  const titleNode =
+    applicationType === 'individual'
+      ? IndividualSteps[stepsIndex]?.title
+      : JointSteps[stepsIndex]?.title;
+
+  const formNode =
+    applicationType === 'individual' ? IndividualSteps : JointSteps;
 
   return (
     <div className='flex flex-col mt-12 mx-2 max-w-[800px]'>
-      <Title level={4}>{steps[stepsIndex]?.title}</Title>
+      {context}
+
+      <Title level={4}>{titleNode}</Title>
 
       <Card>
         <Form
+          name='application-form'
           form={form}
           labelCol={{
             span: 24,
           }}
           onFinish={onSubmit}
+          initialValues={{
+            applicationType: 'individual',
+            firstApplication: {
+              phoneNumberType: 'home',
+            },
+          }}
         >
-          {steps[stepsIndex]?.form}
+          {formNode.map((step, idx) => (
+            <div
+              key={step.title}
+              className={`${idx !== stepsIndex && 'hidden'}`}
+            >
+              {step.form}
+            </div>
+          ))}
         </Form>
       </Card>
     </div>
