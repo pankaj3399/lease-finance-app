@@ -34,7 +34,12 @@ const page = () => {
           below to finish your application process and upload your book out info
           sheet.
         </Title>
-        <Button className='!text-black !bg-yellow-500' size='large'>
+        <Button
+          className='!text-black !bg-yellow-500'
+          size='large'
+          href='https://forms.gle/nzTwyBCQCvzPbTpA9'
+          target='_blank'
+        >
           Finish Approval Application
         </Button>
       </section>
