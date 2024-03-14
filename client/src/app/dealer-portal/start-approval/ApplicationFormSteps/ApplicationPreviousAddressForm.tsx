@@ -8,6 +8,7 @@ import {
   Space,
 } from 'antd';
 import React from 'react';
+import { states } from './formConstants';
 
 type Props = {
   baseFieldName: string;
@@ -87,7 +88,7 @@ const ApplicationPreviousAddressForm = (props: Props) => {
         {addressFields}
       </Form.Item>
       <Form.Item>
-        <Space.Compact className='gap-2'>
+        <Space className='gap-2'>
           <Form.Item
             rules={generalRules}
             name={[baseFieldName, 'previousAddress', 'zipCode']}
@@ -98,20 +99,41 @@ const ApplicationPreviousAddressForm = (props: Props) => {
             rules={generalRules}
             name={[baseFieldName, 'previousAddress', 'city']}
           >
-            <Select placeholder='Select city'>
-              <Select.Option value='Albuquerqu'>Albuquerqu</Select.Option>
+            <Select
+              showSearch
+              optionFilterProp='children'
+              allowClear
+              placeholder='Select city'
+            >
+              {states?.map(([state, cities]) => (
+                <Select.OptGroup key={state} label={state}>
+                  {cities?.map((city) => (
+                    <Select.Option key={city} value={city}>
+                      {city}
+                    </Select.Option>
+                  ))}
+                </Select.OptGroup>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
             rules={generalRules}
             name={[baseFieldName, 'previousAddress', 'state']}
           >
-            <Select placeholder='Select state'>
-              <Select.Option value='CA'>CA</Select.Option>
-              <Select.Option value='NM'>NM</Select.Option>
+            <Select
+              showSearch
+              optionFilterProp='children'
+              allowClear
+              placeholder='Select state'
+            >
+              {states?.map(([key, val]) => (
+                <Select.Option key={key} value={key}>
+                  {key}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
-        </Space.Compact>
+        </Space>
       </Form.Item>
       <Form.Item>
         <div className='flex items-center justify-between w-full'>

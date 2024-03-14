@@ -39,7 +39,7 @@ const ApplicationReview = (props: Props) => {
 
       <div className='flex flex-col space-y-5 !mb-10'>
         <div className='flex items-center  gap-4'>
-          <Checkbox />
+          <Checkbox required />
           <p className='max-w-[400px]'>
             I have read and agree to the{' '}
             <Link href='/terms-and-conditions' target='_blank'>
@@ -50,7 +50,7 @@ const ApplicationReview = (props: Props) => {
           </p>
         </div>
         <div className='flex items-center gap-4'>
-          <Checkbox />
+          <Checkbox required />
           <p>
             I have read and agree to the terms of the{' '}
             <Link href='/privacy-notice' target='_blank'>

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Button,
   Checkbox,
@@ -10,7 +11,8 @@ import {
   Select,
   Space,
 } from 'antd';
-import React, { useEffect, useMemo } from 'react';
+
+import { housingStatuses, states } from './formConstants';
 
 type Props = {
   onPrevHandler: () => void;
@@ -24,6 +26,11 @@ const ApplicationHousingForm = (props: Props) => {
 
   const isRuralRoute = Form.useWatch(
     [baseFieldName, 'currentAddress', 'isRuralRoute'],
+    formInstance
+  );
+
+  const housingStatus = Form.useWatch(
+    [baseFieldName, 'currentAddress', 'housingStatus'],
     formInstance
   );
 
@@ -94,8 +101,8 @@ const ApplicationHousingForm = (props: Props) => {
         </Form.Item>
         {addressFields}
       </Form.Item>
-      <Form.Item>
-        <Space.Compact className='gap-2'>
+      <Form.Item wrapperCol={{ span: 24 }}>
+        <Space className='gap-2'>
           <Form.Item
             rules={generalRules}
             name={[baseFieldName, 'currentAddress', 'zipCode']}
@@ -106,20 +113,41 @@ const ApplicationHousingForm = (props: Props) => {
             rules={generalRules}
             name={[baseFieldName, 'currentAddress', 'city']}
           >
-            <Select placeholder='Select city'>
-              <Select.Option value='Albuquerqu'>Albuquerqu</Select.Option>
+            <Select
+              showSearch
+              optionFilterProp='children'
+              allowClear
+              placeholder='Select city'
+            >
+              {states?.map(([state, cities]) => (
+                <Select.OptGroup key={state} label={state}>
+                  {cities?.map((city) => (
+                    <Select.Option key={city} value={city}>
+                      {city}
+                    </Select.Option>
+                  ))}
+                </Select.OptGroup>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
             rules={generalRules}
             name={[baseFieldName, 'currentAddress', 'state']}
           >
-            <Select placeholder='Select state'>
-              <Select.Option value='CA'>CA</Select.Option>
-              <Select.Option value='NM'>NM</Select.Option>
+            <Select
+              showSearch
+              optionFilterProp='children'
+              allowClear
+              placeholder='Select state'
+            >
+              {states?.map(([key, val]) => (
+                <Select.Option key={key} value={key}>
+                  {key}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
-        </Space.Compact>
+        </Space>
       </Form.Item>
       <Divider />
       <Form.Item>
@@ -133,12 +161,19 @@ const ApplicationHousingForm = (props: Props) => {
             name={[baseFieldName, 'currentAddress', 'housingStatus']}
           >
             <Select placeholder='Select Housing Status'>
-              <Select.Option value='rent'>Rent</Select.Option>
+              {housingStatuses.map((status) => (
+                <Select.Option key={status} value={status}>
+                  {status}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
             labelCol={{
               span: 24,
+            }}
+            wrapperCol={{
+              span: 12,
             }}
             required
             label='Time at Address'
@@ -147,29 +182,30 @@ const ApplicationHousingForm = (props: Props) => {
               <Form.Item
                 name={[baseFieldName, 'currentAddress', 'yearsAtAddress']}
               >
-                <InputNumber addonAfter={'Years'} />
+                <InputNumber addonAfter={'Years'} min={0} />
               </Form.Item>
               <Form.Item
                 rules={generalRules}
                 name={[baseFieldName, 'currentAddress', 'monthsAtAddress']}
               >
-                <InputNumber addonAfter={'Months'} />
+                <InputNumber addonAfter={'Months'} min={0} />
               </Form.Item>
             </Space.Compact>
           </Form.Item>
-
-          <Form.Item
-            labelCol={{
-              span: 24,
-            }}
-            label='Mortage Payment/Rent'
-            rules={generalRules}
-            name={[baseFieldName, 'currentAddress', 'mortage']}
-          >
-            <InputNumber addonAfter={'/Month'} addonBefore={'$'} />
-          </Form.Item>
         </Space.Compact>
       </Form.Item>
+      {housingStatus !== 'Own Outright' && (
+        <Form.Item
+          labelCol={{
+            span: 24,
+          }}
+          label='Mortage Payment/Rent'
+          rules={generalRules}
+          name={[baseFieldName, 'currentAddress', 'mortage']}
+        >
+          <InputNumber addonAfter={'/Month'} addonBefore={'$'} />
+        </Form.Item>
+      )}
       <Divider />
       <Form.Item
         rules={generalRules}

@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 const page = () => {
   return (
-    <div className='flex items-center flex-col justify-center pb-[100px]'>
+    <div className='flex items-center flex-col justify-center pb-[100px] pt-10'>
       <div className='bg-gray-600 w-full text-white py-3 hover:text-blue-400'>
         <Link
           href='/dealer-portal'

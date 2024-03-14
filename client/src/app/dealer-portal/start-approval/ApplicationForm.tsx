@@ -24,9 +24,9 @@ const ApplicationForm = () => {
   const [form] = Form.useForm();
   const [messageApi, context] = message.useMessage();
 
-  const applicationType = Form.useWatch('applicationType', form);
-
   const { submitLoanApplication, loading } = useSubmitLoanApplicationForm();
+
+  const applicationType = Form.useWatch('applicationType', form);
 
   const [stepsIndex, setStepsIndex] = useState(0);
 
@@ -259,6 +259,9 @@ const ApplicationForm = () => {
     <div className='flex flex-col mt-12 mx-2 max-w-[800px]'>
       {context}
 
+      <p className='font-semibold text-gray-400'>
+        Steps {stepsIndex + 1} of {formNode.length}
+      </p>
       <Title level={4}>{titleNode}</Title>
 
       <Card>

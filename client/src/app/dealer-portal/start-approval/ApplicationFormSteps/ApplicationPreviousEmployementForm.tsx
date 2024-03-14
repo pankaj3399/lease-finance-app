@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  Button,
-  Form,
-  FormInstance,
-  Input,
-  InputNumber,
-  Select,
-  Space,
-} from 'antd';
+import { Button, Form, Input, InputNumber, Select, Space } from 'antd';
+
+import { employementStatus } from './formConstants';
 
 type Props = {
   onPrevHandler: () => void;
@@ -46,7 +40,11 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
             name={[baseFieldName, 'previousEmployement', 'employementStatus']}
           >
             <Select placeholder='Select employement status'>
-              <Select.Option value='Employeed'>Employeed</Select.Option>
+              {employementStatus.map((status) => (
+                <Select.Option key={status} value={status}>
+                  {status}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -95,18 +93,18 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
           condition of purchase or credit.
         </p>
 
-        <Form.Item label='Time at Job' required>
+        <Form.Item label='Time at Job' required wrapperCol={{ span: 8 }}>
           <Space.Compact className='gap-2'>
             <Form.Item
               name={[baseFieldName, 'previousEmployement', 'yearsAtJob']}
             >
-              <InputNumber addonAfter='Years' />
+              <InputNumber addonAfter='Years' min={0} />
             </Form.Item>
             <Form.Item
               rules={generalRules}
               name={[baseFieldName, 'previousEmployement', 'monthsAtJob']}
             >
-              <InputNumber addonAfter='Months' />
+              <InputNumber addonAfter='Months' min={0} />
             </Form.Item>
           </Space.Compact>
         </Form.Item>
