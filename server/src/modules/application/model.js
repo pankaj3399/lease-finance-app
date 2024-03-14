@@ -37,6 +37,8 @@ const applicationSchema = new mongoose.Schema(
     salesPersonLastName: {
       type: String,
     },
+    dob: String,
+    SSN: String,
     currentAddress: {
       isSameAsApplicant: {
         type: Boolean,
@@ -77,14 +79,9 @@ const applicationSchema = new mongoose.Schema(
         default: 0,
       },
     },
-    dob: String,
-    SSN: String,
+
     previousAddress: {
       isSameAsApplicant: {
-        type: Boolean,
-        default: false,
-      },
-      isSameMortageInformationAsApplicant: {
         type: Boolean,
         default: false,
       },
