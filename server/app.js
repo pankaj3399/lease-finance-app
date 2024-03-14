@@ -16,7 +16,7 @@ connectToDB();
 
 const admin = await initAdminJS(app);
 
-// admin.watch();
+admin.watch();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
