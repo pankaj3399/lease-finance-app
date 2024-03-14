@@ -57,10 +57,10 @@ const initAdminJS = async (app) => {
       store: sessionStore,
       resave: true,
       saveUninitialized: true,
-      secret: 'Secret',
+      secret: 'sessionsecret',
       cookie: {
         httpOnly: process.env.NODE_ENV === 'production',
-        secure: process.env.NODE_ENV === 'production',
+        // secure: process.env.NODE_ENV === 'production',
       },
       name: 'adminjs',
     }

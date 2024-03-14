@@ -32,13 +32,11 @@ const ApplicationForm = () => {
   const [stepsIndex, setStepsIndex] = useState(0);
 
   const onSubmit = async (values: any) => {
-    console.log(JSON.stringify(values));
     try {
       await submitLoanApplication(values);
       router.push('/dealer-portal/success');
     } catch (err) {
       if (err instanceof Error) {
-        console.log(err);
         messageApi.error('Something went wrong! Please try again');
       }
     }
