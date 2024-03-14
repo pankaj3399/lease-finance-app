@@ -16,6 +16,11 @@ const loanApplicationSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'application',
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
+    },
   },
   { timestamps: true }
 );

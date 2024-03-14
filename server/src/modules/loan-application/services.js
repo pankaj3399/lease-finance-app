@@ -9,6 +9,7 @@ const createLoanApplication = async (body, userId) => {
     const loanApplicationForm = await LoanApplication.create({
       applicationType,
       firstApplication: applicationForm._id,
+      user: userId,
     });
 
     return loanApplicationForm;
@@ -23,6 +24,7 @@ const createLoanApplication = async (body, userId) => {
     applicationType,
     firstApplication: firstApplicationForm._id,
     secondApplication: secondApplicationForm._id,
+    user: userId,
   });
 
   return joinLoanApplicationForm;
