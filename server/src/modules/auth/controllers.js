@@ -9,12 +9,17 @@ import authValidations from './requests.js';
 import authServices from './services.js';
 
 const loginUserHandler = asyncHandler(async (req, res) => {
-  console.log('called');
   const result = await authServices.loginUser(req.body);
 
-  res.status(200).json({
-    user: result,
-  });
+  res.status(200).json(result);
+});
+
+const refreshTokenHandler = asyncHandler(async (req, res) => {
+  const { accessToken, refreshToken } = await authServices.getAccessToken(
+    req.body
+  );
+
+  res.status(200).json({ accessToken, refreshToken });
 });
 
 router.post(
@@ -22,5 +27,6 @@ router.post(
   handleValidation(authValidations.valideLoginUser),
   loginUserHandler
 );
+router.post('/refresh', refreshTokenHandler);
 
 export default router;

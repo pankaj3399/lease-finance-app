@@ -15,8 +15,11 @@ import {
   ApplicationPreviousEmployementForm,
   ApplicationReview,
 } from './ApplicationFormSteps';
+import useAxiosAuth from '@/hooks/useAxiosAuth';
 
 const ApplicationForm = () => {
+  useAxiosAuth();
+
   const router = useRouter();
   const [form] = Form.useForm();
   const [messageApi, context] = message.useMessage();
