@@ -5,12 +5,23 @@ import { employementStatus } from './formConstants';
 
 type Props = {
   onPrevHandler: () => void;
-  onNextHandler: (fields: string[] | string[][], jumpIndex?: number) => void;
+  onNextHandler: (
+    fields: string[] | string[][],
+    redirectToReview?: boolean
+  ) => void;
   baseFieldName: string;
+  applicationType: 'individual' | 'joint';
+  isFormComplete: boolean;
 };
 
 const ApplicationPreviousEmployementForm = (props: Props) => {
-  const { onNextHandler, onPrevHandler, baseFieldName } = props;
+  const {
+    onNextHandler,
+    onPrevHandler,
+    baseFieldName,
+    applicationType,
+    isFormComplete,
+  } = props;
 
   const generalRules = [
     {
@@ -114,13 +125,23 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
           <Button onClick={onPrevHandler} type='primary'>
             Prev
           </Button>
-          <Button
-            onClick={() => onNextHandler(requiredFields, 10)}
-            type='primary'
-          >
+          <Button onClick={() => onNextHandler(requiredFields)} type='primary'>
+            {applicationType === 'joint' && baseFieldName === 'firstApplication'
+              ? 'Next'
+              : 'Review'}
             Review
           </Button>
         </div>
+        {isFormComplete && baseFieldName === 'firstApplication' && (
+          <div className='flex justify-end mt-4'>
+            <Button
+              type='primary'
+              onClick={() => onNextHandler(requiredFields, true)}
+            >
+              Review
+            </Button>
+          </div>
+        )}
       </Form.Item>
     </>
   );

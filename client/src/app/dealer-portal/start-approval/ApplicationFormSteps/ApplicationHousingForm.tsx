@@ -17,13 +17,23 @@ import { housingStatuses, states, streetTypes } from './formConstants';
 
 type Props = {
   onPrevHandler: () => void;
-  onNextHandler: (fields: (string | string[])[]) => void;
+  onNextHandler: (
+    fields: (string | string[])[],
+    redirectToReview?: boolean
+  ) => void;
   baseFieldName: string;
   formInstance: FormInstance<any>;
+  isFormComplete: boolean;
 };
 
 const ApplicationHousingForm = (props: Props) => {
-  const { baseFieldName, onNextHandler, onPrevHandler, formInstance } = props;
+  const {
+    baseFieldName,
+    onNextHandler,
+    onPrevHandler,
+    formInstance,
+    isFormComplete,
+  } = props;
 
   const applicationType = Form.useWatch('applicationType', formInstance);
 
@@ -322,6 +332,16 @@ const ApplicationHousingForm = (props: Props) => {
             Next
           </Button>
         </div>
+        {isFormComplete && (
+          <div className='flex justify-end mt-4'>
+            <Button
+              type='primary'
+              onClick={() => onNextHandler(requiredFields, true)}
+            >
+              Review
+            </Button>
+          </div>
+        )}
       </Form.Item>
     </>
   );

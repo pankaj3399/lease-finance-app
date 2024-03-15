@@ -14,12 +14,22 @@ import { states, streetTypes } from './formConstants';
 type Props = {
   baseFieldName: string;
   onPrevHandler: () => void;
-  onNextHandler: (fields: string[] | string[][]) => void;
+  onNextHandler: (
+    fields: string[] | string[][],
+    redirectToReview?: boolean
+  ) => void;
   formInstance: FormInstance<any>;
+  isFormComplete: boolean;
 };
 
 const ApplicationPreviousAddressForm = (props: Props) => {
-  const { baseFieldName, onPrevHandler, onNextHandler, formInstance } = props;
+  const {
+    baseFieldName,
+    onPrevHandler,
+    onNextHandler,
+    formInstance,
+    isFormComplete,
+  } = props;
 
   const isRuralRoute = Form.useWatch(
     [baseFieldName, 'previousAddress', 'isRuralRoute'],
@@ -185,6 +195,16 @@ const ApplicationPreviousAddressForm = (props: Props) => {
             Next
           </Button>
         </div>
+        {isFormComplete && (
+          <div className='flex justify-end mt-4'>
+            <Button
+              type='primary'
+              onClick={() => onNextHandler(requiredFields, true)}
+            >
+              Review
+            </Button>
+          </div>
+        )}
       </Form.Item>
     </>
   );

@@ -14,13 +14,23 @@ import { employementStatus, incomeSources } from './formConstants';
 
 type Props = {
   onPrevHandler: () => void;
-  onNextHandler: (fields: string[] | string[][]) => void;
+  onNextHandler: (
+    fields: string[] | string[][],
+    redirectToReview?: boolean
+  ) => void;
   baseFieldName: string;
   formInstance: FormInstance<any>;
+  isFormComplete: boolean;
 };
 
 const ApplicationEmployementForm = (props: Props) => {
-  const { onNextHandler, onPrevHandler, baseFieldName, formInstance } = props;
+  const {
+    onNextHandler,
+    onPrevHandler,
+    baseFieldName,
+    formInstance,
+    isFormComplete,
+  } = props;
 
   const generalRules = [
     {
@@ -166,6 +176,16 @@ const ApplicationEmployementForm = (props: Props) => {
             Next
           </Button>
         </div>
+        {isFormComplete && (
+          <div className='flex justify-end mt-4'>
+            <Button
+              type='primary'
+              onClick={() => onNextHandler(requiredFields, true)}
+            >
+              Review
+            </Button>
+          </div>
+        )}
       </Form.Item>
     </>
   );

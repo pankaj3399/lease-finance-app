@@ -12,14 +12,21 @@ import {
 import { suffixes } from './formConstants';
 
 type Props = {
-  onNextHandler: (fields: string[][]) => void;
+  onNextHandler: (fields: string[][], redirectToReview?: boolean) => void;
   onPrevHandler?: () => void;
   baseFieldName: string;
   formInstance: FormInstance<any>;
+  isFormComplete: boolean;
 };
 
 const ApplicationContactInfoForm = (props: Props) => {
-  const { onNextHandler, baseFieldName, onPrevHandler, formInstance } = props;
+  const {
+    onNextHandler,
+    baseFieldName,
+    onPrevHandler,
+    formInstance,
+    isFormComplete,
+  } = props;
 
   const email = Form.useWatch([baseFieldName, 'email'], formInstance);
 
@@ -159,6 +166,16 @@ const ApplicationContactInfoForm = (props: Props) => {
           Prev
         </Button>
       </div>
+      {isFormComplete && (
+        <div className='flex justify-end mt-4'>
+          <Button
+            type='primary'
+            onClick={() => onNextHandler(requiredFields, true)}
+          >
+            Review
+          </Button>
+        </div>
+      )}
     </>
   );
 };

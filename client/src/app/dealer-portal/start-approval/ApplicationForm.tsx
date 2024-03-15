@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Card, Form, message } from 'antd';
 import Title from 'antd/es/typography/Title';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import useSubmitLoanApplicationForm from '@/hooks/useSubmitLoanApplicationForm';
 
@@ -30,6 +30,9 @@ const ApplicationForm = () => {
   const applicationType = Form.useWatch('applicationType', form);
 
   const [stepsIndex, setStepsIndex] = useState(0);
+  const [reachedEnd, setReachedEnd] = useState(false);
+
+  const progress = 100;
 
   const onSubmit = async (values: any) => {
     try {
@@ -49,15 +52,23 @@ const ApplicationForm = () => {
   }, [stepsIndex]);
 
   const onNextHandler = useCallback(
-    async (fields: (string | string[])[]) => {
+    async (fields: (string | string[])[], redirectToReview?: boolean) => {
       try {
         await form.validateFields(fields);
-        setStepsIndex((prev) => prev + 1);
+        if (redirectToReview) {
+          if (applicationType === 'joint') {
+            setStepsIndex(10);
+          } else {
+            setStepsIndex(5);
+          }
+        } else {
+          setStepsIndex((prev) => prev + 1);
+        }
       } catch (err) {
         console.log({ err });
       }
     },
-    [form]
+    [form, applicationType]
   );
 
   const IndividualSteps = useMemo(
@@ -69,6 +80,7 @@ const ApplicationForm = () => {
             onNextHandler={onNextHandler}
             baseFieldName='firstApplication'
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -80,6 +92,7 @@ const ApplicationForm = () => {
             onPrevHandler={onPrevHandler}
             baseFieldName='firstApplication'
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -91,6 +104,7 @@ const ApplicationForm = () => {
             onPrevHandler={onPrevHandler}
             onNextHandler={onNextHandler}
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -102,6 +116,7 @@ const ApplicationForm = () => {
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -112,6 +127,8 @@ const ApplicationForm = () => {
             baseFieldName='firstApplication'
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
+            applicationType={applicationType}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -127,7 +144,7 @@ const ApplicationForm = () => {
         ),
       },
     ],
-    [onNextHandler, onPrevHandler, form, loading]
+    [onNextHandler, onPrevHandler, form, loading, reachedEnd, applicationType]
   );
 
   const JointSteps = useMemo(
@@ -139,6 +156,7 @@ const ApplicationForm = () => {
             onNextHandler={onNextHandler}
             baseFieldName='firstApplication'
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -150,6 +168,7 @@ const ApplicationForm = () => {
             onPrevHandler={onPrevHandler}
             baseFieldName='firstApplication'
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -161,6 +180,7 @@ const ApplicationForm = () => {
             onPrevHandler={onPrevHandler}
             onNextHandler={onNextHandler}
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -172,6 +192,7 @@ const ApplicationForm = () => {
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -182,6 +203,8 @@ const ApplicationForm = () => {
             baseFieldName='firstApplication'
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
+            applicationType={applicationType}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -193,6 +216,7 @@ const ApplicationForm = () => {
             baseFieldName='secondApplication'
             onPrevHandler={onPrevHandler}
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -204,6 +228,7 @@ const ApplicationForm = () => {
             onPrevHandler={onPrevHandler}
             baseFieldName='secondApplication'
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -215,6 +240,7 @@ const ApplicationForm = () => {
             onPrevHandler={onPrevHandler}
             onNextHandler={onNextHandler}
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -226,6 +252,7 @@ const ApplicationForm = () => {
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
             formInstance={form}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -236,6 +263,8 @@ const ApplicationForm = () => {
             baseFieldName='secondApplication'
             onNextHandler={onNextHandler}
             onPrevHandler={onPrevHandler}
+            applicationType={applicationType}
+            isFormComplete={reachedEnd}
           />
         ),
       },
@@ -251,7 +280,7 @@ const ApplicationForm = () => {
         ),
       },
     ],
-    [onNextHandler, onPrevHandler, form, loading]
+    [onNextHandler, onPrevHandler, form, loading, reachedEnd, applicationType]
   );
 
   const titleNode =
@@ -261,6 +290,12 @@ const ApplicationForm = () => {
 
   const formNode =
     applicationType === 'individual' ? IndividualSteps : JointSteps;
+
+  useEffect(() => {
+    if (stepsIndex + 1 == formNode?.length) {
+      setReachedEnd(true);
+    }
+  }, [formNode?.length, stepsIndex]);
 
   return (
     <div className='flex flex-col mt-12 mx-2 max-w-[800px]'>
@@ -302,6 +337,14 @@ const ApplicationForm = () => {
             </div>
           ))}
         </Form>
+        <div className='w-full bg-neutral-200 my-5 rounded-md'>
+          <div
+            className='bg-blue-500 p-0.5 text-center text-xs font-medium leading-none text-white rounded-md'
+            style={{ width: `${progress}%` }}
+          >
+            {progress}%
+          </div>
+        </div>
       </Card>
     </div>
   );
