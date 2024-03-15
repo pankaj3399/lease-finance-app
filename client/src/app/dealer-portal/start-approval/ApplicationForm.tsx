@@ -50,6 +50,7 @@ const ApplicationForm = () => {
   };
 
   const onSubmit = async (values: any) => {
+    console.log({ values });
     try {
       await submitLoanApplication(values);
       router.push('/dealer-portal/success');
@@ -333,6 +334,12 @@ const ApplicationForm = () => {
             applicationType: 'individual',
             firstApplication: {
               phoneNumberType: 'Home',
+              incomeSources: [
+                {
+                  incomeSource: undefined,
+                  annualIncome: undefined,
+                },
+              ],
             },
             secondApplication: {
               phoneNumberType: 'Home',
@@ -340,6 +347,12 @@ const ApplicationForm = () => {
                 isSameAsApplicant: false,
                 isSameMortageInformation: false,
               },
+              incomeSources: [
+                {
+                  incomeSource: undefined,
+                  annualIncome: undefined,
+                },
+              ],
             },
           }}
         >

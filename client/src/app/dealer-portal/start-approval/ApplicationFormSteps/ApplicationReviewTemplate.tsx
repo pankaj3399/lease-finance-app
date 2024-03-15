@@ -185,8 +185,16 @@ const ApplicationReviewTemplate = (props: Props) => {
               label: 'Income',
               children: (
                 <>
-                  {application?.currentEmployement?.incomeSource}, $
-                  {application?.currentEmployement?.annualIncome} Per Year
+                  {application?.incomeSources?.map(
+                    (
+                      source: { incomeSource: string; annualIncome: number },
+                      index: number
+                    ) => (
+                      <p key={source.incomeSource + index}>
+                        {source?.incomeSource}, ${source?.annualIncome} Per Year
+                      </p>
+                    )
+                  )}
                 </>
               ),
               span: 4,

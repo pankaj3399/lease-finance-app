@@ -127,13 +127,6 @@ const applicationSchema = new mongoose.Schema(
         type: Number,
         required: true,
       },
-      incomeSource: {
-        type: String,
-        required: true,
-      },
-      annualIncome: {
-        type: Number,
-      },
     },
     previousEmployement: {
       employementStatus: String,
@@ -143,6 +136,18 @@ const applicationSchema = new mongoose.Schema(
       yearsAtJob: Number,
       monthsAtJob: Number,
     },
+    incomeSources: [
+      {
+        incomeSource: {
+          type: String,
+          required: true,
+        },
+        annualIncome: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

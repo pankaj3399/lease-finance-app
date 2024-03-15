@@ -11,6 +11,7 @@ import {
 import React from 'react';
 
 import { employementStatus, incomeSources } from './formConstants';
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 
 type Props = {
   onPrevHandler: () => void;
@@ -24,13 +25,7 @@ type Props = {
 };
 
 const ApplicationEmployementForm = (props: Props) => {
-  const {
-    onNextHandler,
-    onPrevHandler,
-    baseFieldName,
-    formInstance,
-    isFormComplete,
-  } = props;
+  const { onNextHandler, onPrevHandler, baseFieldName, isFormComplete } = props;
 
   const generalRules = [
     {
@@ -45,8 +40,7 @@ const ApplicationEmployementForm = (props: Props) => {
     [baseFieldName, 'currentEmployement', 'workTitle'],
     [baseFieldName, 'currentEmployement', 'workPhone'],
     [baseFieldName, 'currentEmployement', 'monthsAtJob'],
-    [baseFieldName, 'currentEmployement', 'incomeSource'],
-    [baseFieldName, 'currentEmployement', 'annualIncome'],
+    [baseFieldName, 'incomeSources'],
   ];
 
   return (
@@ -146,26 +140,58 @@ const ApplicationEmployementForm = (props: Props) => {
       </div>
 
       <Form.Item label='Income' required>
-        <Space className='gap-2'>
-          <Form.Item
-            rules={generalRules}
-            name={[baseFieldName, 'currentEmployement', 'incomeSource']}
-          >
-            <Select placeholder='Select Income Source'>
-              {incomeSources.map((source) => (
-                <Select.Option key={source} value={source}>
-                  {source}
-                </Select.Option>
+        <Form.List name={[baseFieldName, 'incomeSources']}>
+          {(fields, { add, remove }) => (
+            <>
+              {fields?.map(({ key, name, ...resetFields }, index) => (
+                <Space className='gap-2 flex items-center' key={key}>
+                  <Form.Item
+                    {...resetFields}
+                    rules={generalRules}
+                    name={[name, 'incomeSource']}
+                  >
+                    <Select placeholder='Select Income Source'>
+                      {incomeSources.map((source) => (
+                        <Select.Option key={source} value={source}>
+                          {source}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    {...resetFields}
+                    rules={generalRules}
+                    name={[name, 'annualIncome']}
+                  >
+                    <InputNumber
+                      addonAfter='Per Year'
+                      addonBefore='$'
+                      min={0}
+                    />
+                  </Form.Item>
+                  {index !== 0 && (
+                    <Form.Item>
+                      <Button
+                        icon={<MinusOutlined />}
+                        onClick={() => remove(index)}
+                      />
+                    </Form.Item>
+                  )}
+                </Space>
               ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            rules={generalRules}
-            name={[baseFieldName, 'currentEmployement', 'annualIncome']}
-          >
-            <InputNumber addonAfter='Per Year' addonBefore='$' />
-          </Form.Item>
-        </Space>
+              <Form.Item>
+                <Button
+                  type='dashed'
+                  onClick={() => add()}
+                  block
+                  icon={<PlusOutlined />}
+                >
+                  Add income source
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
       </Form.Item>
       <Form.Item>
         <div className='flex items-center justify-between w-full'>

@@ -215,12 +215,6 @@ const validateCreateLoanApplication = (data) => {
           'any.required': 'Months at current job is required',
         }),
         yearsAtJob: joi.number().optional().allow().default(0),
-        incomeSource: joi.string().required().messages({
-          'any.required': 'Current income source is required',
-        }),
-        annualIncome: joi.number().required().messages({
-          'any.required': 'Current annual income is required',
-        }),
       })
       .messages({
         'any.required': 'Current employement details are required',
@@ -237,6 +231,18 @@ const validateCreateLoanApplication = (data) => {
       })
       .optional()
       .allow(''),
+    incomeSources: joi
+      .array()
+      .required()
+      .min(1)
+      .items({
+        incomeSource: joi.string().required().messages({
+          'any.required': 'Current income source is required',
+        }),
+        annualIncome: joi.number().required().messages({
+          'any.required': 'Current annual income is required',
+        }),
+      }),
   };
 
   const createLoanApplicationSchema = joi.object().keys({

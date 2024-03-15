@@ -278,7 +278,7 @@ const ApplicationHousingForm = (props: Props) => {
               rules={generalRules}
               name={[baseFieldName, 'currentAddress', 'mortage']}
             >
-              <InputNumber addonAfter={'/Month'} addonBefore={'$'} />
+              <InputNumber addonAfter={'/Month'} addonBefore={'$'} min={0} />
             </Form.Item>
           )}
         </>
