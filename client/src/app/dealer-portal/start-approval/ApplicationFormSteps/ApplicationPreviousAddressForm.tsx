@@ -53,16 +53,11 @@ const ApplicationPreviousAddressForm = (props: Props) => {
       <Space.Compact className='gap-2'>
         <Form.Item
           label='RR'
-          rules={generalRules}
           name={[baseFieldName, 'previousAddress', 'ruralRoute']}
         >
           <Input placeholder='RR' />
         </Form.Item>
-        <Form.Item
-          rules={generalRules}
-          name={[baseFieldName, 'previousAddress', 'box']}
-          label='BOX'
-        >
+        <Form.Item name={[baseFieldName, 'previousAddress', 'box']} label='BOX'>
           <Input placeholder='BOX' />
         </Form.Item>
       </Space.Compact>
@@ -70,16 +65,10 @@ const ApplicationPreviousAddressForm = (props: Props) => {
   ) : (
     <>
       <Space.Compact className='gap-2'>
-        <Form.Item
-          rules={generalRules}
-          name={[baseFieldName, 'previousAddress', 'streetNumber']}
-        >
+        <Form.Item name={[baseFieldName, 'previousAddress', 'streetNumber']}>
           <Input placeholder='Street #' />
         </Form.Item>
-        <Form.Item
-          rules={generalRules}
-          name={[baseFieldName, 'previousAddress', 'streetAddress']}
-        >
+        <Form.Item name={[baseFieldName, 'previousAddress', 'streetAddress']}>
           <Input placeholder='Street Address' />
         </Form.Item>
         <Form.Item name={[baseFieldName, 'previousAddress', 'streetType']}>
@@ -138,16 +127,10 @@ const ApplicationPreviousAddressForm = (props: Props) => {
           </Form.Item>
           <Form.Item>
             <Space className='gap-2'>
-              <Form.Item
-                rules={generalRules}
-                name={[baseFieldName, 'previousAddress', 'zipCode']}
-              >
+              <Form.Item name={[baseFieldName, 'previousAddress', 'zipCode']}>
                 <Input placeholder='Zip Code' />
               </Form.Item>
-              <Form.Item
-                rules={generalRules}
-                name={[baseFieldName, 'previousAddress', 'city']}
-              >
+              <Form.Item name={[baseFieldName, 'previousAddress', 'city']}>
                 <Select
                   showSearch
                   optionFilterProp='children'
@@ -165,10 +148,7 @@ const ApplicationPreviousAddressForm = (props: Props) => {
                   ))}
                 </Select>
               </Form.Item>
-              <Form.Item
-                rules={generalRules}
-                name={[baseFieldName, 'previousAddress', 'state']}
-              >
+              <Form.Item name={[baseFieldName, 'previousAddress', 'state']}>
                 <Select
                   showSearch
                   optionFilterProp='children'

@@ -23,13 +23,6 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
     isFormComplete,
   } = props;
 
-  const generalRules = [
-    {
-      required: true,
-      message: 'Required',
-    },
-  ];
-
   const requiredFields = [
     [baseFieldName, 'previousEmployement', 'employementStatus'],
     [baseFieldName, 'previousEmployement', 'employer'],
@@ -46,7 +39,6 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
             labelCol={{
               span: 24,
             }}
-            rules={generalRules}
             label='Employement Status'
             name={[baseFieldName, 'previousEmployement', 'employementStatus']}
           >
@@ -62,7 +54,6 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
             labelCol={{
               span: 24,
             }}
-            rules={generalRules}
             label='Employer'
             name={[baseFieldName, 'previousEmployement', 'employer']}
           >
@@ -76,7 +67,6 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
           wrapperCol={{
             span: 12,
           }}
-          rules={generalRules}
           label='Work Title'
           name={[baseFieldName, 'previousEmployement', 'workTitle']}
         >
@@ -89,7 +79,6 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
           wrapperCol={{
             span: 12,
           }}
-          rules={generalRules}
           label='Work Phone'
           name={[baseFieldName, 'previousEmployement', 'workPhone']}
         >
@@ -112,7 +101,6 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
               <InputNumber addonAfter='Years' min={0} />
             </Form.Item>
             <Form.Item
-              rules={generalRules}
               name={[baseFieldName, 'previousEmployement', 'monthsAtJob']}
             >
               <InputNumber addonAfter='Months' min={0} />

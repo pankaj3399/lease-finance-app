@@ -136,27 +136,12 @@ const applicationSchema = new mongoose.Schema(
       },
     },
     previousEmployement: {
-      employementStatus: {
-        type: String,
-        required: true,
-      },
-      employer: {
-        type: String,
-        required: true,
-      },
-      workTitle: {
-        type: String,
-        required: true,
-      },
-      workPhone: {
-        type: String,
-        required: true,
-      },
+      employementStatus: String,
+      employer: String,
+      workTitle: String,
+      workPhone: String,
       yearsAtJob: Number,
-      monthsAtJob: {
-        type: Number,
-        required: true,
-      },
+      monthsAtJob: Number,
     },
   },
   { timestamps: true }

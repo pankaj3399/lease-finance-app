@@ -227,28 +227,16 @@ const validateCreateLoanApplication = (data) => {
       }),
     previousEmployement: joi
       .object()
-      .required()
       .keys({
-        employementStatus: joi.string().required().messages({
-          'any.required': 'Current employement status is required',
-        }),
-        employer: joi.string().required().messages({
-          'any.required': 'Current employer name is required',
-        }),
-        workTitle: joi.string().required().messages({
-          'any.required': 'Current work title is required',
-        }),
-        workPhone: joi.string().required().messages({
-          'any.required': 'Current work phone number is required',
-        }),
-        monthsAtJob: joi.number().required().messages({
-          'any.required': 'Months at current job is required',
-        }),
+        employementStatus: joi.string().optional().allow(''),
+        employer: joi.string().optional().allow(''),
+        workTitle: joi.string().optional().allow(''),
+        workPhone: joi.string().optional().allow(''),
+        monthsAtJob: joi.number().optional().allow().default(0),
         yearsAtJob: joi.number().optional().allow().default(0),
       })
-      .messages({
-        'any.required': 'Current employement details are required',
-      }),
+      .optional()
+      .allow(''),
   };
 
   const createLoanApplicationSchema = joi.object().keys({

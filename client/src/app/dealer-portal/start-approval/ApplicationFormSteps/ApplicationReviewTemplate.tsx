@@ -17,7 +17,9 @@ const ApplicationReviewTemplate = (props: Props) => {
             {
               key: '1',
               label: 'Name',
-              children: `${application?.firstName} ${application?.middleName} ${application?.lastName}`,
+              children: `${application?.firstName} ${
+                application?.middleName ?? ''
+              } ${application?.lastName}`,
               span: 4,
             },
             {
@@ -118,14 +120,18 @@ const ApplicationReviewTemplate = (props: Props) => {
                   ) : (
                     <p>
                       {application?.previousAddress?.isRuralRoute
-                        ? `${application?.previousAddress?.ruralRoute} ${application?.previousAddress?.box}`
-                        : `${application?.previousAddress?.streetNumber} ${
-                            application?.previousAddress?.streetAddress
+                        ? `${application?.previousAddress?.ruralRoute ?? ''} ${
+                            application?.previousAddress?.box ?? ''
+                          }`
+                        : `${
+                            application?.previousAddress?.streetNumber ?? ''
+                          } ${
+                            application?.previousAddress?.streetAddress ?? ''
                           } ${application?.previousAddress?.streetType ?? ''}`}
                       <br />
-                      {application?.previousAddress?.city},{' '}
-                      {application?.previousAddress?.state}{' '}
-                      {application?.previousAddress?.zipCode}
+                      {application?.previousAddress?.city ?? ''},{' '}
+                      {application?.previousAddress?.state ?? ''}{' '}
+                      {application?.previousAddress?.zipCode ?? ''}
                     </p>
                   )}
                 </>
