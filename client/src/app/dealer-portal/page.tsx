@@ -37,7 +37,7 @@ const page = () => {
         <Button
           className='!text-black !bg-yellow-500'
           size='large'
-          href='https://forms.gle/nzTwyBCQCvzPbTpA9'
+          href='https://forms.gle/RndUowKvsNdyexPE9'
           target='_blank'
         >
           Finish Approval Application
