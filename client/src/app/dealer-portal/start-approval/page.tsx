@@ -22,7 +22,7 @@ const page = () => {
       </div>
       <div className='header flex items-center space-x-2 py-3 px-5 bg-gray-200 w-full'>
         <CarOutlined className='text-4xl' />
-        <h2 className='text-xl font-semibold'>Patriot Leasing</h2>
+        <h2 className='text-xl font-semibold'>Finance My Cars</h2>
       </div>
       <div className='sub-header flex items-center justify-center w-full py-3 bg-gray-500 text-white space-x-2'>
         <DollarOutlined className='text-2xl' />
