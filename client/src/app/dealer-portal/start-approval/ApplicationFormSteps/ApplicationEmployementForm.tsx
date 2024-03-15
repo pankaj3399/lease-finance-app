@@ -97,7 +97,7 @@ const ApplicationEmployementForm = (props: Props) => {
         >
           <Input />
         </Form.Item>
-        <p className='text-sm mb-5'>
+        <p className='text-xs mb-10'>
           I consent to receive autodialed, pre-recorded and artificial voice
           telemarketing and sales calls and text messages from or on behalf of
           dealer (or any financing source to which dealer assigns my contract)

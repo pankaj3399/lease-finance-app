@@ -1,14 +1,5 @@
-import {
-  Button,
-  Card,
-  Checkbox,
-  Descriptions,
-  Divider,
-  Form,
-  Typography,
-  message,
-} from 'antd';
-import React, { useState } from 'react';
+import { Button, Checkbox, Divider, Form, Typography } from 'antd';
+import React from 'react';
 import Link from 'next/link';
 
 import ApplicationReviewTemplate from './ApplicationReviewTemplate';

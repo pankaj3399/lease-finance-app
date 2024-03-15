@@ -68,6 +68,7 @@ const ApplicationForm = () => {
           <ApplicationContactInfoForm
             onNextHandler={onNextHandler}
             baseFieldName='firstApplication'
+            formInstance={form}
           />
         ),
       },
@@ -137,6 +138,7 @@ const ApplicationForm = () => {
           <ApplicationContactInfoForm
             onNextHandler={onNextHandler}
             baseFieldName='firstApplication'
+            formInstance={form}
           />
         ),
       },
@@ -190,6 +192,7 @@ const ApplicationForm = () => {
             onNextHandler={onNextHandler}
             baseFieldName='secondApplication'
             onPrevHandler={onPrevHandler}
+            formInstance={form}
           />
         ),
       },

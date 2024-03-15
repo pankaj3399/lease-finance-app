@@ -9,7 +9,7 @@ import {
   Space,
 } from 'antd';
 import React from 'react';
-import { states } from './formConstants';
+import { states, streetTypes } from './formConstants';
 
 type Props = {
   baseFieldName: string;
@@ -20,8 +20,6 @@ type Props = {
 
 const ApplicationPreviousAddressForm = (props: Props) => {
   const { baseFieldName, onPrevHandler, onNextHandler, formInstance } = props;
-
-  const applicationType = Form.useWatch('applicationType', formInstance);
 
   const isRuralRoute = Form.useWatch(
     [baseFieldName, 'previousAddress', 'isRuralRoute'],
@@ -64,19 +62,38 @@ const ApplicationPreviousAddressForm = (props: Props) => {
       <Space.Compact className='gap-2'>
         <Form.Item
           rules={generalRules}
-          name={[baseFieldName, 'previousAddress', 'street']}
+          name={[baseFieldName, 'previousAddress', 'streetNumber']}
         >
-          <Input placeholder='Street Name' />
+          <Input placeholder='Street #' />
         </Form.Item>
-        <Form.Item name={[baseFieldName, 'previousAddress', 'appartment']}>
-          <Input placeholder='Apt # (Optional)' />
+        <Form.Item
+          rules={generalRules}
+          name={[baseFieldName, 'previousAddress', 'streetAddress']}
+        >
+          <Input placeholder='Street Address' />
+        </Form.Item>
+        <Form.Item name={[baseFieldName, 'previousAddress', 'streetType']}>
+          <Select placeholder='Select street type'>
+            {streetTypes?.map((type) => (
+              <Select.Option key={type} value={type}>
+                {type}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
       </Space.Compact>
+      <Form.Item
+        wrapperCol={{ span: 6 }}
+        name={[baseFieldName, 'previousAddress', 'appartment']}
+      >
+        <Input placeholder='Apt # (Optional)' />
+      </Form.Item>
     </>
   );
 
   const requiredFields: string[] | string[][] = [
-    [baseFieldName, 'previousAddress', 'street'],
+    [baseFieldName, 'previousAddress', 'streetNumber'],
+    [baseFieldName, 'previousAddress', 'streetAddress'],
     [baseFieldName, 'previousAddress', 'ruralRoute'],
     [baseFieldName, 'previousAddress', 'box'],
     [baseFieldName, 'previousAddress', 'zipCode'],

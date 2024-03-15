@@ -1,13 +1,27 @@
-import { Button, Divider, Form, Input, Radio, Space } from 'antd';
+import {
+  Button,
+  Divider,
+  Form,
+  FormInstance,
+  Input,
+  Radio,
+  Select,
+  Space,
+} from 'antd';
+
+import { suffixes } from './formConstants';
 
 type Props = {
   onNextHandler: (fields: string[][]) => void;
   onPrevHandler?: () => void;
   baseFieldName: string;
+  formInstance: FormInstance<any>;
 };
 
 const ApplicationContactInfoForm = (props: Props) => {
-  const { onNextHandler, baseFieldName, onPrevHandler } = props;
+  const { onNextHandler, baseFieldName, onPrevHandler, formInstance } = props;
+
+  const email = Form.useWatch([baseFieldName, 'email'], formInstance);
 
   const generalRules = [
     {
@@ -34,6 +48,13 @@ const ApplicationContactInfoForm = (props: Props) => {
               <Radio value='joint'> Joint </Radio>
             </Radio.Group>
           </Form.Item>
+          <p className='text-xs'>
+            Please be aware that by selecting &ldquo;Joint&ldquo; the applicant
+            and the co-applicant agree they intend to apply for joint credit.
+            The co-applicant must be present and must indicate his or her
+            acceptance of the Terms and Conditions at the end of this
+            application before it is submitted.
+          </p>
           <Divider />
         </>
       )}
@@ -49,6 +70,15 @@ const ApplicationContactInfoForm = (props: Props) => {
             <Input placeholder='Last Name' />
           </Form.Item>
         </Space.Compact>
+      </Form.Item>
+      <Form.Item name={[baseFieldName, 'suffix']} wrapperCol={{ span: 8 }}>
+        <Select placeholder='Select suffix'>
+          {suffixes.map((suffix) => (
+            <Select.Option value={suffix} key={suffix}>
+              {suffix}
+            </Select.Option>
+          ))}
+        </Select>
       </Form.Item>
       <Divider />
       <Form.Item label='Primary Phone Number'>
@@ -66,11 +96,38 @@ const ApplicationContactInfoForm = (props: Props) => {
             <Input placeholder='Phone number' />
           </Form.Item>
         </Space.Compact>
+        <p className='text-xs'>
+          I consent to receive autodialed, pre-recorded and artificial voice
+          telemarketing and sales calls and text messages from or on behalf of
+          dealer (or any financing source to which dealer assigns my contract)
+          at the telephone number(s) provided in this communication, including
+          any cell phone numbers. I understand that this consent is not a
+          condition of purchase or credit.
+        </p>
       </Form.Item>
+
       <Form.Item
         rules={generalRules}
         label='Email'
         name={[baseFieldName, 'email']}
+      >
+        <Input placeholder='Enter your email' />
+      </Form.Item>
+      <Form.Item
+        rules={[
+          { required: true, message: 'Please confirm your email' },
+          {
+            validator: (_rule, val) => {
+              if (val !== email) {
+                return Promise.reject(new Error('Email did not match'));
+              }
+
+              return Promise.resolve();
+            },
+          },
+        ]}
+        label='Verify Email'
+        name={[baseFieldName, 'verifyEmail']}
       >
         <Input placeholder='Enter your email' />
       </Form.Item>

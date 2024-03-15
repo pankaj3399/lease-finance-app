@@ -13,7 +13,7 @@ import {
   Space,
 } from 'antd';
 
-import { housingStatuses, states } from './formConstants';
+import { housingStatuses, states, streetTypes } from './formConstants';
 
 type Props = {
   onPrevHandler: () => void;
@@ -77,21 +77,40 @@ const ApplicationHousingForm = (props: Props) => {
       <Space.Compact className='gap-2'>
         <Form.Item
           rules={generalRules}
-          name={[baseFieldName, 'currentAddress', 'street']}
+          name={[baseFieldName, 'currentAddress', 'streetNumber']}
+        >
+          <Input placeholder='Street #' />
+        </Form.Item>
+        <Form.Item
+          rules={generalRules}
+          name={[baseFieldName, 'currentAddress', 'streetAddress']}
         >
           <Input placeholder='Street Address' />
         </Form.Item>
-        <Form.Item name={[baseFieldName, 'currentAddress', 'appartment']}>
-          <Input placeholder='Apt # (Optional)' />
+        <Form.Item name={[baseFieldName, 'currentAddress', 'streetType']}>
+          <Select placeholder='Select street type'>
+            {streetTypes?.map((type) => (
+              <Select.Option key={type} value={type}>
+                {type}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
       </Space.Compact>
+      <Form.Item
+        wrapperCol={{ span: 5 }}
+        name={[baseFieldName, 'currentAddress', 'appartment']}
+      >
+        <Input placeholder='Apt # (Optional)' />
+      </Form.Item>
     </>
   );
 
   const requiredFields: (string | string[])[] = [
     [baseFieldName, 'currentAddress', 'ruralRoute'],
     [baseFieldName, 'currentAddress', 'box'],
-    [baseFieldName, 'currentAddress', 'street'],
+    [baseFieldName, 'currentAddress', 'streetNumber'],
+    [baseFieldName, 'currentAddress', 'streetAddress'],
     [baseFieldName, 'currentAddress', 'zipCode'],
     [baseFieldName, 'currentAddress', 'city'],
     [baseFieldName, 'currentAddress', 'state'],

@@ -50,7 +50,9 @@ const ApplicationReviewTemplate = (props: Props) => {
                     <p>
                       {application?.currentAddress?.isRuralRoute
                         ? `${application?.currentAddress?.ruralRoute} ${application?.currentAddress?.box}`
-                        : application?.currentAddress?.street}
+                        : `${application?.currentAddress?.streetNumber} ${
+                            application?.currentAddress?.streetAddress
+                          } ${application?.currentAddress?.streetType ?? ''}`}
                       <br />
                       {application?.currentAddress?.city},{' '}
                       {application?.currentAddress?.state}{' '}
@@ -117,7 +119,9 @@ const ApplicationReviewTemplate = (props: Props) => {
                     <p>
                       {application?.previousAddress?.isRuralRoute
                         ? `${application?.previousAddress?.ruralRoute} ${application?.previousAddress?.box}`
-                        : application?.previousAddress?.street}
+                        : `${application?.previousAddress?.streetNumber} ${
+                            application?.previousAddress?.streetAddress
+                          } ${application?.previousAddress?.streetType ?? ''}`}
                       <br />
                       {application?.previousAddress?.city},{' '}
                       {application?.previousAddress?.state}{' '}

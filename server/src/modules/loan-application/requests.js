@@ -5,6 +5,9 @@ const validateCreateLoanApplication = (data) => {
     firstName: joi.string().required().messages({
       'any.required': 'First name is required',
     }),
+
+    suffix: joi.string().optional().allow(''),
+
     middleName: joi.string().optional().allow(''),
     lastName: joi.string().required().messages({
       'any.required': 'Last name is required',
@@ -18,6 +21,9 @@ const validateCreateLoanApplication = (data) => {
     }),
     email: joi.string().required().messages({
       'any.required': 'Email is required',
+    }),
+    verifyEmail: joi.string().required().messages({
+      'any.required': 'Verify your email address',
     }),
     currentAddress: joi
       .object()
@@ -40,7 +46,7 @@ const validateCreateLoanApplication = (data) => {
           then: joi.string().required(),
           otherwise: joi.string().optional().allow(''),
         }),
-        street: joi.when('isSameAsApplicant', {
+        streetNumber: joi.when('isSameAsApplicant', {
           is: false,
           then: joi.when('isRuralRoute', {
             is: true,
@@ -51,6 +57,18 @@ const validateCreateLoanApplication = (data) => {
           }),
           otherwise: joi.string().optional().allow('').default(''),
         }),
+        streetAddress: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.when('isRuralRoute', {
+            is: true,
+            then: joi.string().optional().allow('').default(''),
+            otherwise: joi.string().required().messages({
+              'any.required': 'Current street address is required',
+            }),
+          }),
+          otherwise: joi.string().optional().allow('').default(''),
+        }),
+        streetType: joi.string().optional().allow('').default(''),
         zipCode: joi.when('isSameAsApplicant', {
           is: false,
           then: joi.string().required().messages({
@@ -129,17 +147,29 @@ const validateCreateLoanApplication = (data) => {
           then: joi.string().required(),
           otherwise: joi.string().optional().allow(''),
         }),
-        street: joi.when('isSameAsApplicant', {
+        streetNumber: joi.when('isSameAsApplicant', {
           is: false,
           then: joi.when('isRuralRoute', {
             is: true,
             then: joi.string().optional().allow('').default(''),
             otherwise: joi.string().required().messages({
-              'any.required': 'Previous address street address is required',
+              'any.required': 'Previous street address is required',
             }),
           }),
           otherwise: joi.string().optional().allow('').default(''),
         }),
+        streetAddress: joi.when('isSameAsApplicant', {
+          is: false,
+          then: joi.when('isRuralRoute', {
+            is: true,
+            then: joi.string().optional().allow('').default(''),
+            otherwise: joi.string().required().messages({
+              'any.required': 'Previous street address is required',
+            }),
+          }),
+          otherwise: joi.string().optional().allow('').default(''),
+        }),
+        streetType: joi.string().optional().allow('').default(''),
         zipCode: joi.when('isSameAsApplicant', {
           is: false,
           then: joi.string().required().messages({

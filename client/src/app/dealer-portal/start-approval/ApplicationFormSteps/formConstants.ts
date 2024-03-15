@@ -38,3 +38,30 @@ export const housingStatuses = [
   'Family',
   'Other',
 ];
+
+export const suffixes = ['JR', 'SR', 'I', 'II', 'III', 'IV', 'V'];
+
+export const streetTypes = [
+  'Avenue',
+  'Boulevard',
+  'Circle',
+  'Cove',
+  'Crescent',
+  'Court',
+  'Drive',
+  'Freeway',
+  'Highway',
+  'Lane',
+  'Loop',
+  'Path',
+  'Parkway',
+  'Place',
+  'Plaza',
+  'Road',
+  'Square',
+  'Street',
+  'Terrance',
+  'Turnpike',
+  'Trail',
+  'Way',
+];

@@ -58,7 +58,9 @@ const applicationSchema = new mongoose.Schema(
       box: {
         type: String,
       },
-      street: String,
+      streetNumber: String,
+      streetAddress: String,
+      streetType: String,
       apartment: String,
       zipCode: {
         type: String,
@@ -95,7 +97,9 @@ const applicationSchema = new mongoose.Schema(
       box: {
         type: String,
       },
-      street: String,
+      streetNumber: String,
+      streetAddress: String,
+      streetType: String,
       apartment: String,
       zipCode: String,
       city: String,
