@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Button, Card, Form, Input, Typography, message } from 'antd';
-import { KeyOutlined, UserOutlined } from '@ant-design/icons';
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from "react";
+import { Button, Card, Form, Input, Typography, message } from "antd";
+import { KeyOutlined, UserOutlined } from "@ant-design/icons";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-import CompanyLogo from '@/components/CompanyLogo';
+import CompanyLogo from "@/components/CompanyLogo";
 
 type formValues = {
   username: string;
@@ -25,7 +25,7 @@ const Login = () => {
   const onSubmit = async (values: formValues) => {
     try {
       setIsLoading(true);
-      const res = await signIn('credentials', {
+      const res = await signIn("credentials", {
         username: values.username,
         password: values.password,
         redirect: false,
@@ -36,7 +36,7 @@ const Login = () => {
       }
 
       if (res?.ok) {
-        return router.replace('/dealer-portal');
+        return router.replace("/dealer-portal");
       }
     } catch (err) {
       console.log({ err });
@@ -46,38 +46,38 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/dealer-portal');
+    if (status === "authenticated") {
+      router.push("/dealer-portal");
     }
   }, [status, router]);
 
   return (
-    <div className='flex flex-col w-full items-center justify-center min-h-[100dvh]'>
+    <div className="flex flex-col w-full items-center justify-center min-h-[100dvh]">
       {contextHolder}
       <CompanyLogo />
-      <Card className='w-full max-w-[450px] space-y-2 mx-2'>
-        <Typography.Title level={2} className='text-center'>
-          Welcome to lease app
+      <Card className="w-full max-w-[450px] space-y-2 mx-2">
+        <Typography.Title level={2} className="text-center">
+          Welcome to finance app
         </Typography.Title>
 
-        <Form name='login-form' onFinish={onSubmit} autoComplete='off'>
+        <Form name="login-form" onFinish={onSubmit} autoComplete="off">
           <Form.Item
-            name='username'
-            rules={[{ required: true, message: 'Username is required' }]}
+            name="username"
+            rules={[{ required: true, message: "Username is required" }]}
           >
             <Input
-              placeholder='Enter your username'
-              size='large'
+              placeholder="Enter your username"
+              size="large"
               prefix={<UserOutlined />}
             />
           </Form.Item>
           <Form.Item
-            name='password'
-            rules={[{ required: true, message: 'Password is required' }]}
+            name="password"
+            rules={[{ required: true, message: "Password is required" }]}
           >
             <Input.Password
-              placeholder='Enter your password'
-              size='large'
+              placeholder="Enter your password"
+              size="large"
               prefix={<KeyOutlined />}
             />
           </Form.Item>
@@ -87,9 +87,9 @@ const Login = () => {
             }}
           >
             <Button
-              htmlType='submit'
-              size='large'
-              type='primary'
+              htmlType="submit"
+              size="large"
+              type="primary"
               disabled={isLoading}
               loading={isLoading}
             >
