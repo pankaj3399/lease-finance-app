@@ -129,7 +129,6 @@ const ApplicationPreviousEmployementForm = (props: Props) => {
             {applicationType === 'joint' && baseFieldName === 'firstApplication'
               ? 'Next'
               : 'Review'}
-            Review
           </Button>
         </div>
         {isFormComplete && baseFieldName === 'firstApplication' && (

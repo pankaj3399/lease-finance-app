@@ -32,7 +32,22 @@ const ApplicationForm = () => {
   const [stepsIndex, setStepsIndex] = useState(0);
   const [reachedEnd, setReachedEnd] = useState(false);
 
-  const progress = 100;
+  const getProgress = () => {
+    if (reachedEnd) {
+      return 100;
+    }
+
+    const JOINT_STEPS = 11;
+    const INVIDUAL_STEPS = 6;
+
+    const steps = stepsIndex;
+
+    if (applicationType === 'joint') {
+      return Math.round((steps / JOINT_STEPS) * 100);
+    } else {
+      return Math.round((steps / INVIDUAL_STEPS) * 100);
+    }
+  };
 
   const onSubmit = async (values: any) => {
     try {
@@ -340,9 +355,9 @@ const ApplicationForm = () => {
         <div className='w-full bg-neutral-200 my-5 rounded-md'>
           <div
             className='bg-blue-500 p-0.5 text-center text-xs font-medium leading-none text-white rounded-md'
-            style={{ width: `${progress}%` }}
+            style={{ width: `${getProgress()}%` }}
           >
-            {progress}%
+            {getProgress()}%
           </div>
         </div>
       </Card>
