@@ -4,9 +4,9 @@ import { BadRequest } from '../../lib/errors.js';
 import { createAccessToken, createRefreshToken } from '../../lib/token.js';
 
 const loginUser = async (body) => {
-  const { email, password } = body;
+  const { username, password } = body;
 
-  const isUser = await User.findOne({ email });
+  const isUser = await User.findOne({ username });
 
   if (!isUser) {
     throw new BadRequest('Wrong credentials');
