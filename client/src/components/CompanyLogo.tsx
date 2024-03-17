@@ -1,14 +1,14 @@
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
 const CompanyLogo = () => {
   return (
     <Image
       priority
-      src='/logo.png'
+      src="/logo-new.png"
       width={500}
       height={500}
-      alt='company-logo'
+      alt="company-logo"
     />
   );
 };

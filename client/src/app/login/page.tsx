@@ -57,7 +57,7 @@ const Login = () => {
       <CompanyLogo />
       <Card className="w-full max-w-[450px] space-y-2 mx-2">
         <Typography.Title level={2} className="text-center">
-          Welcome to financemycars.net
+          Welcome to FinanceMyCars.net
         </Typography.Title>
 
         <Form name="login-form" onFinish={onSubmit} autoComplete="off">
